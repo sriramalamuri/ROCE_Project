@@ -1,0 +1,44 @@
+--===========================================
+--Load data into the tables
+--===========================================
+
+--Load data into table dim_entity_pack
+
+Truncate Table bronze.dim_entity_pack;
+Copy bronze.dim_entity_pack from 'C:/SQL_Project/ROCE/Master_Files/Entity_Master_Pack_basis.csv' with (header true, format csv)
+
+--Load data into table dim_entity_tb
+
+Truncate Table bronze.dim_entity_tb;
+Copy bronze.dim_entity_tb from 'C:/SQL_Project/ROCE/Master_Files/Entity_Master_TB_basis.csv' with (header true, format csv)
+
+--Load data into table dim_period_reference
+
+Truncate Table bronze.dim_period_reference;
+Copy bronze.dim_period_reference from 'C:/SQL_Project/ROCE/Master_Files/Period_reference.csv' with (header true, format csv)
+
+--Load data into table dim_ce_direction
+
+Truncate Table bronze.dim_ce_direction;
+Copy bronze.dim_ce_direction from 'C:/SQL_Project/ROCE/Master_Files/CE_Direction.csv' with (header true, format csv)
+
+--Load data into table dim_gl_mapping
+
+Truncate Table bronze.dim_gl_mapping;
+Copy bronze.dim_gl_mapping from 'C:/SQL_Project/ROCE/Master_Files/GL_Account_Mapping.csv' with (header true, format csv)
+
+--Load data into table dim_ebit_direction
+
+Truncate Table bronze.dim_ebit_direction;
+Copy bronze.dim_ebit_direction from 'C:/SQL_Project/ROCE/Master_Files/EBIT_Direction.csv' with (header true, format csv)
+
+--Load data into table fact_bs_grid_ye
+
+Truncate Table bronze.fact_bs_grid_ye;
+Copy bronze.fact_bs_grid_ye from 'C:/SQL_Project/ROCE/Grids/CSV_grids/BS - Each_Months_Full_Yr_Forecast.csv' with (header true, format csv)
+
+--Load data into table fact_pl_grid_ye
+
+Truncate Table bronze.fact_pl_grid_ye;
+Copy bronze.fact_pl_grid_ye from 'C:/SQL_Project/ROCE/Grids/CSV_grids/PL grid - Each_Months_Full_Yr_Forecast.csv' with (header true, format csv)
+

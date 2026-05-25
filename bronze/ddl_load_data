@@ -32,13 +32,39 @@ Copy bronze.dim_gl_mapping from 'C:/SQL_Project/ROCE/Master_Files/GL_Account_Map
 Truncate Table bronze.dim_ebit_direction;
 Copy bronze.dim_ebit_direction from 'C:/SQL_Project/ROCE/Master_Files/EBIT_Direction.csv' with (header true, format csv)
 
---Load data into table fact_bs_grid_ye
+--=======================================================
+--Stored procedure to load data into fact tables
+--=======================================================
+Create or Replace Procedure bronze.refresh_fact_table()
+Language plpgsql
+As $$
+Begin
+Raise Notice 'data load process has begun';
+	
+	--Load data into table fact_bs_grid_ye
+	
+	Truncate Table bronze.fact_bs_grid_ye;
+	Copy bronze.fact_bs_grid_ye from 'C:/SQL_Project/ROCE/Grids/CSV_grids/BS - Each_Months_Full_Yr_Forecast.csv' with (header true, format csv);
+	
+	--Load data into table fact_pl_grid_ye
+	
+	Truncate Table bronze.fact_pl_grid_ye;
+	Copy bronze.fact_pl_grid_ye from 'C:/SQL_Project/ROCE/Grids/CSV_grids/PL grid - Each_Months_Full_Yr_Forecast.csv' with (header true, format csv);
+	
+	--Load data into table fact_bs_act
+	
+	Truncate Table bronze.fact_bs_act;
+	Copy bronze.fact_bs_act from 'C:/SQL_Project/ROCE/Grids/CSV_grids/BS - Each_Months_Actual.csv' with (header true, format csv);
+	
+	--Load data into table fact_pl_act
+	
+	Truncate Table bronze.fact_pl_act;
+	Copy bronze.fact_pl_act from 'C:/SQL_Project/ROCE/Grids/CSV_grids/PL grid - Each_Months_Actual.csv' with (header true, format csv);
 
-Truncate Table bronze.fact_bs_grid_ye;
-Copy bronze.fact_bs_grid_ye from 'C:/SQL_Project/ROCE/Grids/CSV_grids/BS - Each_Months_Full_Yr_Forecast.csv' with (header true, format csv)
+Raise Notice 'data load process has ended';
+End;
+$$;
 
---Load data into table fact_pl_grid_ye
-
-Truncate Table bronze.fact_pl_grid_ye;
-Copy bronze.fact_pl_grid_ye from 'C:/SQL_Project/ROCE/Grids/CSV_grids/PL grid - Each_Months_Full_Yr_Forecast.csv' with (header true, format csv)
+--====================================================================================
+call bronze.refresh_fact_table();
 

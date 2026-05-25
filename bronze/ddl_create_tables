@@ -1,0 +1,160 @@
+--=================================
+--Create tables in bronze schema
+--=================================
+
+--Create bronze.dim_entity_pack
+--This table is a mapping of entity names as they appear in packs
+--with their common names that will be used in this project
+
+Create Table bronze.dim_entity_pack(
+	entity_key int,
+	entity_pack_name varchar(100),
+	common_name varchar(50),
+	vertical varchar(50)
+);
+
+--Create bronze.dim_entity_tb
+--This table is a mapping of entity names as the appear in TB
+--with their common names that will be used in this project
+
+Create Table bronze.dim_entity_tb(
+	entity_key int,
+	entity_code	int,
+	entity_name	varchar(100),
+	common_name	varchar(100),
+	vertical varchar(50)
+);
+
+--Create table bronze.dim_period_reference
+--This table is like the calendar table in Power BI
+--It will help with time and date analyses when this report is moved to Power BI
+
+Create Table bronze.dim_period_reference(
+	periods date,
+	years int,
+	month_num int,
+	month_name varchar(50),
+	quarter varchar(10),
+	quarter_num int,
+	month_year varchar(50),
+	year_month_sort int
+);
+
+--Create table bronze.dim_ce_direction
+--The purpose of this table is to assist in calculation 
+--of capital employed based on defined sign conventions
+
+Create Table bronze.dim_ce_direction(
+	Order_key int,
+	line_description varchar(100),
+	ce_direction int,
+	adjustment_items int,
+	ce_bucket varchar(100),
+	ce_sub_bucket varchar(100)
+);
+
+--Create table bronze.dim_gl_mapping
+--The purpose of this table is to map the GL account descriptions
+--to their corresponding pack grid line descriptions
+
+Create Table bronze.dim_gl_mapping(
+	gl_number int,
+	gl_description varchar(200),
+	gl_mapping varchar(200)
+);
+
+--Create table bronze.dim_ebit_direction
+--The purpose of this table is to assist in EBIT calculation
+--with the help of the defined sign conventions
+
+Create Table bronze.dim_ebit_direction(
+	order_key int,
+	line_description varchar(200),
+	common_name varchar(100),
+	ebit_direction int
+);
+
+--Create table bronze.fact_bs_grid_ye
+--The purpose of this table is to provide the data to work out
+--the capital employed based on the "year-end (ye) balances method"
+
+Create Table bronze.fact_bs_grid_ye(
+	line_description varchar(200),
+	pack_entity_name varchar(100),
+	years int,
+	scenario varchar(100),
+	months varchar(20),
+	amount_in_rupees numeric
+);
+
+--Create table bronze.fact_pl_grid_ye
+--The purpose of this table is to provide the data to work out
+--the EBIT based on the "year-end (ye) balances method"
+
+Create table bronze.fact_pl_grid_ye(
+	pack_entity_name varchar(100),
+	line_description varchar(200),
+	custom_1 varchar(20),
+	custom_2 varchar(20),
+	years int,
+	scenario varchar(20),
+	view_ varchar(20), 
+	amount_in_rupees numeric
+);
+
+--Create table bronze.fact_bs_act
+--The purpose of this table is to calculate the capital employed
+--based on the latest actual ending balances ("actuals annualized method")
+
+Create Table bronze.fact_bs_act(
+	line_description varchar(200),
+	pack_entity_name varchar(100),
+ 	years int,
+	scenario varchar(100),
+	months varchar(20),
+	amount_in_rupees numeric
+);
+
+--Create table bronze.fact_pl_act
+--The purpose of this table is to calculate the EBIT
+--based on the latest actual ending balances ("actuals annualized method")
+
+Create Table bronze.fact_pl_act(
+	pack_entity_name varchar(100),
+	line_description varchar(200),
+	custom_1 varchar(20),
+	custom_2 varchar(20),
+	years int,
+	scenario varchar(20),
+	months varchar(20),
+	amount_in_rupees numeric
+);
+
+--Create table bronze.fact_trial_balance
+--The pupose of this table is to bring in the actuals at GL level
+--This table will be used for a drill-down when we choose to analyse
+--the ROCE based on the "actuals-annualized method"
+
+Create Table bronze.fact_trial_balance(
+	accounting_period date,
+	ledger varchar(200),
+	entity_code int,
+	entity_name varchar(200),
+	cost_center int,
+	cost_center_description	varchar(200),
+	account	int,
+	account_description varchar(200),
+	intercompany int,
+	intercompany_description varchar(200),
+	service_line int,
+	service_line_description varchar(100),
+	analysis int,
+	analysis_description varchar(200),
+	future1 int,
+	future1_description varchar(100),
+	future2 int,
+	future2_description varchar(100),
+	beginning_balance numeric,
+	period_activity numeric,
+	ending_balance numeric
+);

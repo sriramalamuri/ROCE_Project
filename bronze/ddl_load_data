@@ -1,78 +1,112 @@
---===========================================
---Load data into the tables
---===========================================
+--==============================================================
+--Creating tables in silver layer to transfer raw data
+--from bronze layer and perform some modifications on the data
+--==============================================================
 
---Load data into table dim_entity_pack
+--Create silver.dim_ce_direction
 
-Truncate Table bronze.dim_entity_pack;
-Copy bronze.dim_entity_pack from 'C:/SQL_Project/ROCE/Master_Files/Entity_Master_Pack_basis.csv' with (header true, format csv)
-
---Load data into table dim_entity_tb
-
-Truncate Table bronze.dim_entity_tb;
-Copy bronze.dim_entity_tb from 'C:/SQL_Project/ROCE/Master_Files/Entity_Master_TB_basis.csv' with (header true, format csv)
-
---Load data into table dim_period_reference
-
-Truncate Table bronze.dim_period_reference;
-Copy bronze.dim_period_reference from 'C:/SQL_Project/ROCE/Master_Files/Period_reference.csv' with (header true, format csv)
-
---Load data into table dim_ce_direction
-
-Truncate Table bronze.dim_ce_direction;
-Copy bronze.dim_ce_direction from 'C:/SQL_Project/ROCE/Master_Files/CE_Direction.csv' with (header true, format csv)
-
---Load data into table dim_gl_mapping
-
-Truncate Table bronze.dim_gl_mapping;
-Copy bronze.dim_gl_mapping from 'C:/SQL_Project/ROCE/Master_Files/GL_Account_Mapping.csv' with (header true, format csv)
-
---Load data into table dim_ebit_direction
-
-Truncate Table bronze.dim_ebit_direction;
-Copy bronze.dim_ebit_direction from 'C:/SQL_Project/ROCE/Master_Files/EBIT_Direction.csv' with (header true, format csv)
-
---=======================================================
---Stored procedure to load data into fact tables
---=======================================================
-Create or Replace Procedure bronze.refresh_fact_table()
-Language plpgsql
-As $$
+Do $$
 Begin
-Raise Notice 'data load process has begun';
-	
-	--Load data into table fact_bs_grid_ye
-	
-	Truncate Table bronze.fact_bs_grid_ye;
-	Copy bronze.fact_bs_grid_ye from 'C:/SQL_Project/ROCE/Grids/CSV_grids/BS - Each_Months_Full_Yr_Forecast.csv' with (header true, format csv);
-	
-	--Load data into table fact_pl_grid_ye
-	
-	Truncate Table bronze.fact_pl_grid_ye;
-	Copy bronze.fact_pl_grid_ye from 'C:/SQL_Project/ROCE/Grids/CSV_grids/PL grid - Each_Months_Full_Yr_Forecast.csv' with (header true, format csv);
-	
-	--Load data into table fact_bs_act
-	
-	Truncate Table bronze.fact_bs_act;
-	Copy bronze.fact_bs_act from 'C:/SQL_Project/ROCE/Grids/CSV_grids/BS - Each_Months_Actual.csv' with (header true, format csv);
-	
-	--Load data into table fact_pl_act
-	
-	Truncate Table bronze.fact_pl_act;
-	Copy bronze.fact_pl_act from 'C:/SQL_Project/ROCE/Grids/CSV_grids/PL grid - Each_Months_Actual.csv' with (header true, format csv);
+	If to_regclass('silver.dim_ce_direction') Is Not Null Then
+	Drop Table silver.dim_ce_direction;
+	End If;
+End $$;
+Create Table silver.dim_ce_direction(
+	Order_key int,
+	line_description varchar(100),
+	ce_direction int,
+	adjustment_items int,
+	ce_bucket varchar(100),
+	ce_sub_bucket varchar(100),
+	dwh_create_date timestamp default now()
+);
 
-Raise Notice 'data load process has ended';
-End;
-$$;
+--Create table silver.dim_ebit_direction
 
---====================================================================================
-call bronze.refresh_fact_table();
+Do $$
+Begin
+	If to_regclass(silver.dim_ebit_direction) Is Not Null Then
+	Drop Table silver.dim_ebit_direction;
+	End If;
+End $$;
+Create Table silver.dim_ebit_direction(
+	order_key int,
+	line_description varchar(200),
+	common_name varchar(100),
+	ebit_direction int,
+	dwh_create_date timestamp default now()
+);
 
---====================================================================================
---Load data into the table fact_trial_balance
+--Create table silver.dim_entity_pack
 
-Truncate Table bronze.fact_trial_balance;
-Copy bronze.fact_trial_balance from 'C:/SQL_Project/ROCE/Global_secondary_ledgers/Power_Query_Cleaned_Data.csv' with (format csv, header true);
+Do $$
+Begin
+	If to_regclass(silver.dim_entity_pack) Is Not Null Then
+	Drop Table silver.dim_entity_pack;
+	End If;
+End $$;
+Create Table silver.dim_entity_pack(
+	entity_key int,
+	entity_pack_name varchar(100),
+	common_name varchar(50),
+	vertical varchar(50),
+	dwh_create_date timestamp default now()
+);
 
+--Create table silver.dim_entity_tb
 
+Do $$
+Begin
+	If to_regclass(silver.dim_entity_tb) Is Not Null Then
+	Drop Table silver.dim_entity_tb
+	End If;
+End $$;
+Create Table silver.dim_entity_tb(
+	entity_key int,
+	entity_code	int,
+	entity_name	varchar(100),
+	common_name	varchar(100),
+	vertical varchar(50),
+	dwh_create_date timestamp default now()
+);
 
+--Create table silver.dim_gl_mapping
+
+Do $$
+Begin
+	If to_regclass(silver.dim_gl_mapping) Is Not Null Then
+	Drop Table silver.dim_gl_mapping;
+	End If;
+End $$;
+Create Table silver.dim_gl_mapping(
+	gl_number int,
+	gl_description varchar(200),
+	gl_mapping varchar(200),
+	statement_map varchar(5),	
+	statement_group varchar(100),
+	ce_direction int,
+	adjustment_items int,
+	ce_bucket varchar(100),
+	ce_sub_bucket varchar(100),
+	dwh_create_date timestamp default now()
+);
+
+--Create tabel silver.dim_period_reference
+
+Do $$
+Begin
+	If to_regclass(silver.dim_period_reference) Is Not Null Then
+	Drop Table silver.dim_period_reference;
+	End If;
+End $$;
+Create Table silver.dim_period_reference(
+	periods date,
+	years int,
+	month_num int,
+	month_name varchar(50),
+	quarter varchar(10),
+	quarter_num int,
+	month_year varchar(50),
+	year_month_sort int,
+	dwh_create_date timestamp default now()
+);

@@ -60,7 +60,13 @@ Create Table bronze.dim_ce_direction(
 Create Table bronze.dim_gl_mapping(
 	gl_number int,
 	gl_description varchar(200),
-	gl_mapping varchar(200)
+	gl_mapping varchar(200),
+	statement_map varchar(5),	
+	statement_group varchar(100),
+	ce_direction int,
+	adjustment_items int,
+	ce_bucket varchar(100),
+	ce_sub_bucket varchar(100)
 );
 
 --Create table bronze.dim_ebit_direction

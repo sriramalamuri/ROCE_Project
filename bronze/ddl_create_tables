@@ -80,6 +80,16 @@ Create Table bronze.dim_ebit_direction(
 	ebit_direction int
 );
 
+--Create table bronze.dim_annualized_factor
+--This table is used to assign annualization factor 
+--in the annualized EBIT method
+
+Create Table bronze.dim_annualized_factor(
+	month_num int,
+	factor numeric
+);
+
+
 --Create table bronze.fact_bs_grid_ye
 --The purpose of this table is to provide the data to work out
 --the capital employed based on the "year-end (ye) balances method"

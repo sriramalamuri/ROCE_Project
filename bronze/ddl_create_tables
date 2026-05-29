@@ -77,7 +77,8 @@ Create Table bronze.dim_ebit_direction(
 	order_key int,
 	line_description varchar(200),
 	common_name varchar(100),
-	ebit_direction int
+	ebit_direction int,
+	category varchar(20)
 );
 
 --Create table bronze.dim_annualized_factor

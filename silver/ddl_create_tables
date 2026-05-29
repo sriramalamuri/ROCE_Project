@@ -82,6 +82,12 @@ Create Table silver.dim_gl_mapping(
 	gl_number int,
 	gl_description varchar(200),
 	gl_mapping varchar(200),
+	statement_map varchar(5),	
+	statement_group varchar(100),
+	ce_direction int,
+	adjustment_items int,
+	ce_bucket varchar(100),
+	ce_sub_bucket varchar(100),
 	dwh_create_date timestamp default now()
 );
 
@@ -105,9 +111,49 @@ Create Table silver.dim_period_reference(
 	dwh_create_date timestamp default now()
 );
 
+--Create table silver.fact_bs_act
 
+Do $$
+Begin
+	If to_regclass(silver.fact_bs_act) Is Not Null Then
+	Drop Table silver.fact_bs_act;
+	End If;
+End $$;
+Create Table silver.fact_bs_act(
+	line_description varchar(200),
+	pack_entity_name varchar(100),
+ 	years int,
+	scenario varchar(100),
+	months varchar(20),
+	amount_in_rupees numeric,
+	ce_direction int,
+	adjustment_items int,
+	ce_bucket varchar(100),
+	ce_sub_bucket varchar(100),
+	month_year varchar(50),
+	dwh_create_date timestamp default now()
+)
 
-
-
+--Create table silver.fact_bs_grid_ye
+Do $$
+Begin
+	If to_regclass(silver.fact_bs_grid_ye) Is Not Null Then
+	Drop Table silver.fact_bs_grid_ye;
+	End if;
+End $$;
+Create Table silver.fact_bs_grid_ye(
+	line_description varchar(200),
+	pack_entity_name varchar(100),
+	years int,
+	scenario varchar(100),
+	months varchar(20),
+	amount_in_rupees numeric,
+	ce_direction int,
+	adjustment_items int,
+	ce_bucket varchar(100),
+	ce_sub_bucket varchar(100),
+	month_year varchar(50),
+	dwh_create_date timestamp default now()
+);
 
 

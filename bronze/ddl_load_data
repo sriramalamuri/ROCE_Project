@@ -73,3 +73,20 @@ call bronze.refresh_fact_table();
 
 Truncate Table bronze.fact_trial_balance;
 Copy bronze.fact_trial_balance from 'C:/SQL_Project/ROCE/Global_secondary_ledgers/Power_Query_Cleaned_Data.csv' with (format csv, header true);
+
+--======================================================
+--Load data into bronze.dim_annualized_factor
+--======================================================
+
+Truncate table bronze.dim_annualized_factor;
+Copy bronze.dim_annualized_factor from 'C:/SQL_Project/ROCE/Master_Files/Annualize_factor.csv' with (header true, format csv);
+
+--======================================================
+--Load data into bronze.dim_ce_method
+--======================================================
+
+Truncate table bronze.dim_ce_method;
+Copy bronze.dim_ce_method from 'C:/SQL_Project/ROCE/Master_Files/ce_method_name.csv' with (header true, format csv);
+
+
+

@@ -50,7 +50,8 @@ Create Table bronze.dim_ce_direction(
 	ce_direction int,
 	adjustment_items int,
 	ce_bucket varchar(100),
-	ce_sub_bucket varchar(100)
+	ce_sub_bucket varchar(100),
+	category varchar(20)
 );
 
 --Create table bronze.dim_gl_mapping

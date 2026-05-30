@@ -28,11 +28,13 @@ Begin
 	End If;
 	Insert Into silver.dim_annualized_factor(
 		month_num,
-		factor
+		factor,
+		month_name
 	)
 	Select 
 		month_num,
-		factor
+		factor,
+		month_name
 	From bronze.dim_annualized_factor;
 
 --Load data into silver.dim_ce_direction
@@ -273,6 +275,7 @@ Begin
 		category
 	From fact_bs_grid_ye;
 
+
 --Load data into silver.fact_pl_act
 
 	If to_regclass('silver.fact_pl_act') Is Not Null Then
@@ -290,7 +293,8 @@ Begin
 		ebit_direction, --this will come from Left join on dim_ebit_direction
 		common_name, --this will come from Left join on dim_ebit_direction
 		category, --this will come from Left join on dim_ebit_direction
-		year_month_name --this will come from concat of years and months columns
+		year_month_name, --this will come from concat of years and months columns,
+		factor
 	)
 	Select
 		pa.pack_entity_name,
@@ -304,7 +308,64 @@ Begin
 		ed.ebit_direction, --this will come from Left join on dim_ebit_direction
 		ed.common_name, --this will come from Left join on dim_ebit_direction
 		ed.category, --this will come from Left join on dim_ebit_direction
-		pa.years||pa.months as year_month_name --this will come from concat of years and months columns
+		pa.years||pa.months as year_month_name, --this will come from concat of years and months columns
+		af.factor	
 	From bronze.fact_pl_act pa
 	Left Join bronze.dim_ebit_direction ed
-	On pa.line_description = ed.line_description;
+	On pa.line_description = ed.line_description
+	Left Join bronze.dim_annualized_factor af
+	On pa.months = af.month_name;
+
+--Load data into silver.fact_pl_grid_ye
+
+	If to_regclass('silver.fact_pl_grid_ye') Is Not Null Then
+	Truncate Table silver.fact_pl_grid_ye
+	End If;
+	Insert Into silver.fact_pl_grid_ye(
+		pack_entity_name,
+		line_description,
+		custom_1,
+		custom_2,
+		years,
+		scenario,
+		view_,
+		amount_in_rupees,
+		ebit_direction, --this will come from Left join on dim_ebit_direction
+		common_name, --this will come from Left join on dim_ebit_direction
+		category, --this will come from Left join on dim_ebit_direction
+		year_month_name --this will come from concat of years from this table and months scenario_master
+    )
+	With fact_pl_ye as(
+	Select
+		pg.pack_entity_name as pack_entity_name,
+		pg.line_description as line_description,
+		pg.custom_1 as custom_1,
+		pg.custom_2 as custom_2,
+		pg.years as years,
+		pg.scenario as scenario,
+		pg.view_ as view_,
+		pg.amount_in_rupees as amount_in_rupees,
+		ed.ebit_direction as ebit_direction, 
+		ed.common_name as common_name, 
+		ed.category as category,
+		sm.months as month_name--this will come from concat of years from this table and months scenario_master
+    From bronze.fact_pl_grid_ye pg
+	Left Join bronze.dim_ebit_direction ed
+	On pg.line_description = ed.line_description
+	Left Join bronze.dim_scenario_master sm
+	On pg.scenario = sm.scenario
+	)
+	Select
+		pack_entity_name,
+		line_description,
+		custom_1,
+		custom_2,
+		years,
+		scenario,
+		view_,
+		amount_in_rupees,
+		ebit_direction, 
+		common_name, 
+		category, 
+		years || month_name as year_month_name 
+	From fact_pl_ye;

@@ -154,7 +154,8 @@ Begin
 		quarter,
 		quarter_num,
 		month_year,
-		year_month_sort
+		year_month_sort,
+		year_month_name
 	)
 	Select
 		periods,
@@ -164,7 +165,6 @@ Begin
 		quarter,
 		quarter_num,
 		month_year,
-		year_month_sort
+		year_month_sort,
+		year_month_name
 	From bronze.dim_period_reference;
-
-

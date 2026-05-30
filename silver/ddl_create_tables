@@ -18,6 +18,7 @@ Create Table silver.dim_ce_direction(
 	adjustment_items int,
 	ce_bucket varchar(100),
 	ce_sub_bucket varchar(100),
+	category varchar(20),
 	dwh_create_date timestamp default now()
 );
 
@@ -34,6 +35,7 @@ Create Table silver.dim_ebit_direction(
 	line_description varchar(200),
 	common_name varchar(100),
 	ebit_direction int,
+	category varchar(20),
 	dwh_create_date timestamp default now()
 );
 

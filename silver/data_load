@@ -7,6 +7,20 @@ language plpgsql
 As $$
 Begin
 
+--Load data into silver.dim_scenario_master
+
+	If to_regclass('silver.dim_scenario_master') Is Not Null Then
+	Truncate Table silver.dim_scenario_master
+	End If;
+	Insert Into silver.dim_scenario_master(
+		scenario,
+		months
+	)
+	Select 
+		scenario,
+		months
+	From bronze.dim_scenario_master;
+
 --Load data into silver.dim_annualized_factor
 
 	If to_regclass('silver.dim_annualized_factor') Is Not Null Then

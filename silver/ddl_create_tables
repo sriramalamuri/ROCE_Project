@@ -3,6 +3,20 @@
 --from bronze layer and perform some modifications on the data
 --==============================================================
 
+--Create table silver.dim_scenario_master
+
+Do $$
+Begin
+	If to_regclass('silver.dim_scenario_master') Is Not Null Then
+	Drop Table silver.dim_scenario_master;
+	End If;
+End $$;
+Create Table silver.dim_scenario_master(
+	scenario varchar(25),
+	months varchar(10),
+	dwh_create_date timestamp default now()
+);
+
 --Create silver.dim_ce_direction
 
 Do $$

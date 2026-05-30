@@ -2,6 +2,15 @@
 --Create tables in bronze schema
 --=================================
 
+--Scenario Master for year_end_grids
+--This will be used in the silver layer to plot the month in the ye_grids
+--using concat of year and month we will bring in the year_month_name from period_reference
+
+Create Table bronze.dim_scenario_master(
+	scenario varchar(25),
+	months varchar(10)
+);
+
 --Create bronze.dim_entity_pack
 --This table is a mapping of entity names as they appear in packs
 --with their common names that will be used in this project

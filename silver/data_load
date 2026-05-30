@@ -218,3 +218,57 @@ Begin
 	From bronze.fact_bs_act ba
 	Left Join bronze.dim_ce_direction cd
 	On ba.line_description = cd.line_description;
+
+--Load data in silver.fact_bs_grid_ye
+	If to_regclass('silver.fact_bs_grid_ye') Is Not Null Then
+	Truncate Table silver.fact_bs_grid_ye
+	End If;
+	Insert Into silver.fact_bs_grid_ye(
+		line_description,
+		pack_entity_name,
+		years,
+		scenario,
+		months,
+		amount_in_rupees,
+		ce_direction, --this will come from join with dim_ce_direction
+		adjustment_items, --this will come from join with dim_ce_direction
+		ce_bucket, --this will come from join with dim_ce_direction
+		ce_sub_bucket, --this will come from join with dim_ce_direction
+		month_year, --this will be a concatenate of years column from this table and month column from scenario master
+		category --this will come from join with dim_ce_direction
+	)
+	With fact_bs_grid_ye as(
+	Select
+		bg.line_description as line_description,
+		bg.pack_entity_name as pack_entity_name,
+		bg.years as years,
+		bg.scenario as scenario,
+		bg.months as months,
+		bg.amount_in_rupees as amount_in_rupees,
+		cd.ce_direction as ce_direction,
+		cd.adjustment_items as adjustment_items, 
+		cd.ce_bucket as ce_bucket, 
+		cd.ce_sub_bucket as ce_sub_bucket, 
+		--bg.month_year, 
+		cd.category as category,
+		sm.months as month_name
+	From bronze.fact_bs_grid_ye bg
+	Left Join bronze.dim_ce_direction cd
+	On bg.line_description = cd.line_description
+	Left Join bronze.dim_scenario_master sm
+	On bg.scenario = sm.scenario
+	)
+	Select
+		line_description,
+		pack_entity_name,
+		years,
+		scenario,
+		months, 
+		amount_in_rupees, 
+		ce_direction, 
+		adjustment_items,
+		ce_bucket, 
+		ce_sub_bucket, 
+		years||month_name as month_year, 
+		category
+	From fact_bs_grid_ye;

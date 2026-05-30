@@ -202,4 +202,68 @@ Create Table silver.fact_pl_grid_ye(
 	dwh_create_date timestamp default now()
 );
 
+--Create Table silver.fact_trial_balance
 
+Do $$
+Begin
+	If to_regclass(silver.fact_trial_balance) Is Not Null Then
+	Drop Table silver.fact_trial_balance;
+	End If;
+End $$;
+Create Table silver.fact_trial_balance(
+	accounting_period date,
+	ledger varchar(200),
+	entity_code int,
+	entity_name varchar(200),
+	cost_center int,
+	cost_center_description	varchar(200),
+	account	int,
+	account_description varchar(200),
+	intercompany int,
+	intercompany_description varchar(200),
+	service_line int,
+	service_line_description varchar(100),
+	analysis int,
+	analysis_description varchar(200),
+	future1 int,
+	future1_description varchar(100),
+	future2 int,
+	future2_description varchar(100),
+	beginning_balance numeric,
+	period_activity numeric,
+	ending_balance numeric,
+	statement_map varchar(5),
+	statement_group varchar(100),
+	ce_direction int,
+	adjustment_items int,
+	ce_bucket varchar(100),
+	ce_sub_bucket varchar(100),
+	dwh_create_date timestamp default now()
+);
+
+--Create table silver.dim_annualized_factor
+
+Do $$
+Begin
+	If to_regclass(silver.dim_annualized_factor) Is Not Null Then
+	Drop Table silver.dim_annualized_factor;
+	End If;
+End $$;
+Create Table silver.dim_annualized_factor(
+	month_num int,
+	factor numeric,
+	dwh_create_date timestamp default now()
+);
+
+--Create table silver.dim_ce_method
+
+Do $$
+Begin
+	If to_regclass(silver.dim_ce_method) Is Not Null Then
+	Drop Table silver.dim_ce_method;
+	End If;
+End $$;
+Create Table silver.dim_ce_method(
+	method_name varchar(100),
+	dwh_create_date timestamp default now()
+);

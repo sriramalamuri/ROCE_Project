@@ -37,7 +37,8 @@ Create Table bronze.dim_period_reference(
 	quarter varchar(10),
 	quarter_num int,
 	month_year varchar(50),
-	year_month_sort int
+	year_month_sort int,
+	year_month_name varchar(20)
 );
 
 --Create table bronze.dim_ce_direction

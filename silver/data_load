@@ -182,3 +182,39 @@ Begin
 		year_month_sort,
 		year_month_name
 	From bronze.dim_period_reference;
+
+--Load data into silver.fact_bs_act
+
+	If to_regclass('silver.fact_bs_act') Is Not Null Then
+	Truncate Table silver.fact_bs_act
+	End If;
+	Insert Into silver.fact_bs_act(
+		line_description,
+		pack_entity_name,
+		years,
+		scenario,
+		months,
+		amount_in_rupees,
+		ce_direction, --this will come from join with dim_ce_direction
+		adjustment_items, --this will come from join with dim_ce_direction
+		ce_bucket, --this will come from join with dim_ce_direction
+		ce_sub_bucket, --this will come from join with dim_ce_direction
+		month_year, --this will be a concatenate of years and month column
+		category --this will come from join with dim_ce_direction
+	)
+	Select
+		ba.line_description as line_description,
+		ba.pack_entity_name as pack_entity_name,
+		ba.years as years,
+		ba.scenario as scenario,
+		ba.months as months,
+		ba.amount_in_rupees as amount_in_rupees,
+		cd.ce_direction as ce_direction,
+		cd.adjustment_items as adjustment_items,
+		cd.ce_bucket as ce_bucket,
+		cd.ce_sub_bucket as ce_sub_bucket,
+		ba.years || ba.months as month_year,
+		cd.category as category		
+	From bronze.fact_bs_act ba
+	Left Join bronze.dim_ce_direction cd
+	On ba.line_description = cd.line_description;

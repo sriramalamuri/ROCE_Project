@@ -1,0 +1,98 @@
+--==================================================
+--Load data into silver layer
+--==================================================
+
+
+
+Create or Replace procedure silver.load_silver()
+language plpgsql
+As $$
+Begin
+
+--Load data into silver.dim_annualized_factor
+
+	If to_regclass('silver.dim_annualized_factor') Is Not Null Then
+	Truncate Table silver.dim_annualized_factor
+	End If;
+	Insert Into silver.dim_annualized_factor(
+		month_num,
+		factor
+	)
+	Select 
+		month_num,
+		factor
+	From bronze.dim_annualized_factor;
+
+--Load data into silver.dim_ce_direction
+
+	If to_regclass('silver.dim_ce_direction') Is Not Null Then
+	Truncate Table silver.dim_ce_direction
+	End If;
+	Insert Into silver.dim_ce_direction(
+		order_key,
+		line_description,
+		ce_direction,
+		adjustment_items,
+		ce_bucket,
+		ce_sub_bucket,
+		category
+	)
+	Select
+		order_key,
+		line_description,
+		ce_direction,
+		adjustment_items,
+		ce_bucket,
+		ce_sub_bucket,
+		category
+	From bronze.dim_ce_direction;
+
+--Load data into silver.dim_ce_method
+
+	If to_regclass('silver.dim_ce_method') Is Not Null Then
+	Truncate Table silver.dim_ce_method
+	End if;
+	Insert into silver.dim_ce_method(
+		method_name
+	)
+	Select method_name
+	From bronze.dim_ce_method;
+
+--Load data into silver.dim_ebit_direction
+	If to_regclass('silver.dim_ebit_direction') Is Not Null Then
+	Truncate Table silver.dim_ebit_direction
+	End if;
+	Insert Into silver.dim_ebit_direction(
+		order_key,
+		line_description,
+		common_name,
+		ebit_direction,
+		category
+	)
+	Select
+		order_key,
+		line_description,
+		common_name,
+		ebit_direction,
+		category
+	From bronze.dim_ebit_direction;
+
+--Load data into silver.dim_entity_pack
+
+	If to_regclass('silver.dim_entity_pack') Is Not Null Then
+	Truncate Table silver.dim_entity_pack
+	End If;
+	Insert Into silver.dim_entity_pack(
+		entity_key,
+		entity_pack_name,
+		common_name,
+		vertical
+	)
+	Select 
+		entity_key,
+		entity_pack_name,
+		common_name,
+		vertical
+	From bronze.dim_entity_pack;
+
+--Load data into silver.dim_entity_tb

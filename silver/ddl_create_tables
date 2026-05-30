@@ -25,7 +25,7 @@ Create Table silver.dim_ce_direction(
 
 Do $$
 Begin
-	If to_regclass(silver.dim_ebit_direction) Is Not Null Then
+	If to_regclass('silver.dim_ebit_direction') Is Not Null Then
 	Drop Table silver.dim_ebit_direction;
 	End If;
 End $$;
@@ -41,7 +41,7 @@ Create Table silver.dim_ebit_direction(
 
 Do $$
 Begin
-	If to_regclass(silver.dim_entity_pack) Is Not Null Then
+	If to_regclass('silver.dim_entity_pack') Is Not Null Then
 	Drop Table silver.dim_entity_pack;
 	End If;
 End $$;
@@ -57,8 +57,8 @@ Create Table silver.dim_entity_pack(
 
 Do $$
 Begin
-	If to_regclass(silver.dim_entity_tb) Is Not Null Then
-	Drop Table silver.dim_entity_tb
+	If to_regclass('silver.dim_entity_tb') Is Not Null Then
+	Drop Table silver.dim_entity_tb;
 	End If;
 End $$;
 Create Table silver.dim_entity_tb(
@@ -74,7 +74,7 @@ Create Table silver.dim_entity_tb(
 
 Do $$
 Begin
-	If to_regclass(silver.dim_gl_mapping) Is Not Null Then
+	If to_regclass('silver.dim_gl_mapping') Is Not Null Then
 	Drop Table silver.dim_gl_mapping;
 	End If;
 End $$;
@@ -95,7 +95,7 @@ Create Table silver.dim_gl_mapping(
 
 Do $$
 Begin
-	If to_regclass(silver.dim_period_reference) Is Not Null Then
+	If to_regclass('silver.dim_period_reference') Is Not Null Then
 	Drop Table silver.dim_period_reference;
 	End If;
 End $$;
@@ -115,7 +115,7 @@ Create Table silver.dim_period_reference(
 
 Do $$
 Begin
-	If to_regclass(silver.fact_bs_act) Is Not Null Then
+	If to_regclass('silver.fact_bs_act') Is Not Null Then
 	Drop Table silver.fact_bs_act;
 	End If;
 End $$;
@@ -133,12 +133,12 @@ Create Table silver.fact_bs_act(
 	month_year varchar(50),
 	category varchar(20),
 	dwh_create_date timestamp default now()
-)
+);
 
 --Create table silver.fact_bs_grid_ye
 Do $$
 Begin
-	If to_regclass(silver.fact_bs_grid_ye) Is Not Null Then
+	If to_regclass('silver.fact_bs_grid_ye') Is Not Null Then
 	Drop Table silver.fact_bs_grid_ye;
 	End if;
 End $$;
@@ -162,8 +162,8 @@ Create Table silver.fact_bs_grid_ye(
 
 Do $$
 Begin
-	If to_regclass(silver.fact_pl_act) Is Not Null Then
-	Drop Table (silver_fact_pl_act);
+	If to_regclass('silver.fact_pl_act') Is Not Null Then
+	Drop Table silver.fact_pl_act;
 	End If;
 End $$;
 Create Table silver.fact_pl_act(
@@ -184,8 +184,8 @@ Create Table silver.fact_pl_act(
 
 Do $$
 Begin
-	If to_regclass(silver.fact_pl_grid_ye) Is Not Null Then
-	Drop Table (silver.fact_pl_grid_ye);
+	If to_regclass('silver.fact_pl_grid_ye') Is Not Null Then
+	Drop Table silver.fact_pl_grid_ye;
 	End If;
 End $$;
 Create Table silver.fact_pl_grid_ye(
@@ -206,7 +206,7 @@ Create Table silver.fact_pl_grid_ye(
 
 Do $$
 Begin
-	If to_regclass(silver.fact_trial_balance) Is Not Null Then
+	If to_regclass('silver.fact_trial_balance') Is Not Null Then
 	Drop Table silver.fact_trial_balance;
 	End If;
 End $$;
@@ -245,7 +245,7 @@ Create Table silver.fact_trial_balance(
 
 Do $$
 Begin
-	If to_regclass(silver.dim_annualized_factor) Is Not Null Then
+	If to_regclass('silver.dim_annualized_factor') Is Not Null Then
 	Drop Table silver.dim_annualized_factor;
 	End If;
 End $$;
@@ -256,10 +256,9 @@ Create Table silver.dim_annualized_factor(
 );
 
 --Create table silver.dim_ce_method
-
 Do $$
 Begin
-	If to_regclass(silver.dim_ce_method) Is Not Null Then
+	If to_regclass('silver.dim_ce_method') Is Not Null Then
 	Drop Table silver.dim_ce_method;
 	End If;
 End $$;

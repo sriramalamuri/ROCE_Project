@@ -10,7 +10,7 @@ Begin
 --Load data into silver.dim_scenario_master
 
 	If to_regclass('silver.dim_scenario_master') Is Not Null Then
-	Truncate Table silver.dim_scenario_master
+	Truncate Table silver.dim_scenario_master;
 	End If;
 	Insert Into silver.dim_scenario_master(
 		scenario,
@@ -24,7 +24,7 @@ Begin
 --Load data into silver.dim_annualized_factor
 
 	If to_regclass('silver.dim_annualized_factor') Is Not Null Then
-	Truncate Table silver.dim_annualized_factor
+	Truncate Table silver.dim_annualized_factor;
 	End If;
 	Insert Into silver.dim_annualized_factor(
 		month_num,
@@ -40,7 +40,7 @@ Begin
 --Load data into silver.dim_ce_direction
 
 	If to_regclass('silver.dim_ce_direction') Is Not Null Then
-	Truncate Table silver.dim_ce_direction
+	Truncate Table silver.dim_ce_direction;
 	End If;
 	Insert Into silver.dim_ce_direction(
 		order_key,
@@ -64,7 +64,7 @@ Begin
 --Load data into silver.dim_ce_method
 
 	If to_regclass('silver.dim_ce_method') Is Not Null Then
-	Truncate Table silver.dim_ce_method
+	Truncate Table silver.dim_ce_method;
 	End if;
 	Insert into silver.dim_ce_method(
 		method_name
@@ -74,7 +74,7 @@ Begin
 
 --Load data into silver.dim_ebit_direction
 	If to_regclass('silver.dim_ebit_direction') Is Not Null Then
-	Truncate Table silver.dim_ebit_direction
+	Truncate Table silver.dim_ebit_direction;
 	End if;
 	Insert Into silver.dim_ebit_direction(
 		order_key,
@@ -94,7 +94,7 @@ Begin
 --Load data into silver.dim_entity_pack
 
 	If to_regclass('silver.dim_entity_pack') Is Not Null Then
-	Truncate Table silver.dim_entity_pack
+	Truncate Table silver.dim_entity_pack;
 	End If;
 	Insert Into silver.dim_entity_pack(
 		entity_key,
@@ -112,7 +112,7 @@ Begin
 --Load data into silver.dim_entity_tb
 
 	If to_regclass('silver.dim_entity_tb') Is Not Null Then
-	Truncate Table silver.dim_entity_tb
+	Truncate Table silver.dim_entity_tb;
 	End If;
 	Insert Into silver.dim_entity_tb(
 		entity_key,
@@ -132,7 +132,7 @@ Begin
 --Load data into silver.dim_gl_mapping
 
 	If to_regclass('silver.dim_gl_mapping') Is Not Null Then
-	Truncate Table silver.dim_gl_mapping
+	Truncate Table silver.dim_gl_mapping;
 	End If;
 	Insert Into silver.dim_gl_mapping(
 		gl_number,
@@ -160,7 +160,7 @@ Begin
 --Load data into silver.dim_period_reference
 
 	If to_regclass('silver.dim_period_reference') Is Not Null Then
-	Truncate Table silver.dim_period_reference
+	Truncate Table silver.dim_period_reference;
 	End If;
 	Insert Into silver.dim_period_reference(
 		periods,
@@ -188,7 +188,7 @@ Begin
 --Load data into silver.fact_bs_act
 
 	If to_regclass('silver.fact_bs_act') Is Not Null Then
-	Truncate Table silver.fact_bs_act
+	Truncate Table silver.fact_bs_act;
 	End If;
 	Insert Into silver.fact_bs_act(
 		line_description,
@@ -223,7 +223,7 @@ Begin
 
 --Load data in silver.fact_bs_grid_ye
 	If to_regclass('silver.fact_bs_grid_ye') Is Not Null Then
-	Truncate Table silver.fact_bs_grid_ye
+	Truncate Table silver.fact_bs_grid_ye;
 	End If;
 	Insert Into silver.fact_bs_grid_ye(
 		line_description,
@@ -279,7 +279,7 @@ Begin
 --Load data into silver.fact_pl_act
 
 	If to_regclass('silver.fact_pl_act') Is Not Null Then
-	Truncate Table silver.fact_pl_act
+	Truncate Table silver.fact_pl_act;
 	End If;
 	Insert Into silver.fact_pl_act(
 		pack_entity_name,
@@ -319,7 +319,7 @@ Begin
 --Load data into silver.fact_pl_grid_ye
 
 	If to_regclass('silver.fact_pl_grid_ye') Is Not Null Then
-	Truncate Table silver.fact_pl_grid_ye
+	Truncate Table silver.fact_pl_grid_ye;
 	End If;
 	Insert Into silver.fact_pl_grid_ye(
 		pack_entity_name,
@@ -369,3 +369,82 @@ Begin
 		category, 
 		years || month_name as year_month_name 
 	From fact_pl_ye;
+
+--Load data into silver.fact_trial_balance
+	If to_regclass('silver.fact_trial_balance') Is Not Null Then
+	Truncate Table silver.fact_trial_balance;
+	End If;
+	Insert Into silver.fact_trial_balance(
+		accounting_period,
+		ledger,
+		entity_code,
+		entity_name,
+		cost_center,
+		cost_center_description,
+		account,
+		account_description,
+		intercompany,
+		intercompany_description,
+		service_line,
+		service_line_description,
+		analysis,
+		analysis_description,
+		future1,
+		future1_description,
+		future2,
+		future2_description,
+		beginning_balance,
+		period_activity,
+		ending_balance,
+		statement_map,
+		statement_group,
+		ce_direction,
+		adjustment_items,
+		ce_bucket,
+		ce_sub_bucket,
+		gl_mapping
+	)
+	Select
+		tb.accounting_period,
+		tb.ledger,
+		tb.entity_code,
+		tb.entity_name,
+		tb.cost_center,
+		tb.cost_center_description,
+		tb.account,
+		tb.account_description,
+		tb.intercompany,
+		tb.intercompany_description,
+		tb.service_line,
+		tb.service_line_description,
+		tb.analysis,
+		tb.analysis_description,
+		tb.future1,
+		tb.future1_description,
+		tb.future2,
+		tb.future2_description,
+		tb.beginning_balance,
+		tb.period_activity,
+		tb.ending_balance,
+		gm.statement_map,
+		gm.statement_group,
+		gm.ce_direction,
+		gm.adjustment_items,
+		gm.ce_bucket,
+		gm.ce_sub_bucket,
+		gm.gl_mapping
+	From bronze.fact_trial_balance tb
+	Left Join bronze.dim_gl_mapping gm
+	On tb.account_description = gm.gl_description;
+
+End;
+$$;
+
+--============================================================
+--call procedure silver.load_silver()
+--============================================================
+
+call silver.load_silver()
+
+
+

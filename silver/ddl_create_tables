@@ -193,7 +193,9 @@ Create Table silver.fact_pl_act(
 	months varchar(20),
 	amount_in_rupees numeric,
 	ebit_direction int,
+	common_name varchar(100),
 	category varchar(20),
+	year_month_name varchar(20),
 	dwh_create_date timestamp default now()
 );
 

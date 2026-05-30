@@ -215,3 +215,30 @@ Create Table silver.fact_trial_balance(
 	ce_sub_bucket varchar(100),
 	dwh_create_date timestamp default now()
 );
+
+--Create table silver.dim_annualized_factor
+
+Do $$
+Begin
+	If to_regclass(silver.dim_annualized_factor) Is Not Null Then
+	Drop Table silver.dim_annualized_factor;
+	End If;
+End $$;
+Create Table silver.dim_annualized_factor(
+	month_num int,
+	factor numeric,
+	dwh_create_date timestamp default now()
+);
+
+--Create table silver.dim_ce_method
+
+Do $$
+Begin
+	If to_regclass(silver.dim_ce_method) Is Not Null Then
+	Drop Table silver.dim_ce_method;
+	End If;
+End $$;
+Create Table silver.dim_ce_method(
+	method_name varchar(100),
+	dwh_create_date timestamp default now()
+);

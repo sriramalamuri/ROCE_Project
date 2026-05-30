@@ -131,6 +131,7 @@ Create Table silver.fact_bs_act(
 	ce_bucket varchar(100),
 	ce_sub_bucket varchar(100),
 	month_year varchar(50),
+	category varchar(20),
 	dwh_create_date timestamp default now()
 )
 
@@ -153,6 +154,51 @@ Create Table silver.fact_bs_grid_ye(
 	ce_bucket varchar(100),
 	ce_sub_bucket varchar(100),
 	month_year varchar(50),
+	category varchar(20),
+	dwh_create_date timestamp default now()
+);
+
+--Create Table silver.fact_pl_act
+
+Do $$
+Begin
+	If to_regclass(silver.fact_pl_act) Is Not Null Then
+	Drop Table (silver_fact_pl_act);
+	End If;
+End $$;
+Create Table silver.fact_pl_act(
+	pack_entity_name varchar(100),
+	line_description varchar(200),
+	custom_1 varchar(20),
+	custom_2 varchar(20),
+	years int,
+	scenario varchar(20),
+	months varchar(20),
+	amount_in_rupees numeric,
+	ebit_direction int,
+	category varchar(20),
+	dwh_create_date timestamp default now()
+);
+
+--Create Table silver.fact_pl_grid_ye
+
+Do $$
+Begin
+	If to_regclass(silver.fact_pl_grid_ye) Is Not Null Then
+	Drop Table (silver.fact_pl_grid_ye);
+	End If;
+End $$;
+Create Table silver.fact_pl_grid_ye(
+	pack_entity_name varchar(100),
+	line_description varchar(200),
+	custom_1 varchar(20),
+	custom_2 varchar(20),
+	years int,
+	scenario varchar(20),
+	view_ varchar(20), 
+	amount_in_rupees numeric,
+	ebit_direction int,
+	category varchar(20),
 	dwh_create_date timestamp default now()
 );
 

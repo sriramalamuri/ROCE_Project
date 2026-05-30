@@ -2,8 +2,6 @@
 --Load data into silver layer
 --==================================================
 
-
-
 Create or Replace procedure silver.load_silver()
 language plpgsql
 As $$
@@ -96,3 +94,77 @@ Begin
 	From bronze.dim_entity_pack;
 
 --Load data into silver.dim_entity_tb
+
+	If to_regclass('silver.dim_entity_tb') Is Not Null Then
+	Truncate Table silver.dim_entity_tb
+	End If;
+	Insert Into silver.dim_entity_tb(
+		entity_key,
+		entity_code,
+		entity_name,
+		common_name,
+		vertical
+	)
+	Select
+		entity_key,
+		entity_code,
+		entity_name,
+		common_name,
+		vertical
+	From bronze.dim_entity_tb;
+
+--Load data into silver.dim_gl_mapping
+
+	If to_regclass('silver.dim_gl_mapping') Is Not Null Then
+	Truncate Table silver.dim_gl_mapping
+	End If;
+	Insert Into silver.dim_gl_mapping(
+		gl_number,
+		gl_description,
+		gl_mapping,
+		statement_map,
+		statement_group,
+		ce_direction,
+		adjustment_items,
+		ce_bucket,
+		ce_sub_bucket
+	)
+	Select
+		gl_number,
+		gl_description,
+		gl_mapping,
+		statement_map,
+		statement_group,
+		ce_direction,
+		adjustment_items,
+		ce_bucket,
+		ce_sub_bucket
+	From bronze.dim_gl_mapping;
+	
+--Load data into silver.dim_period_reference
+
+	If to_regclass('silver.dim_period_reference') Is Not Null Then
+	Truncate Table silver.dim_period_reference
+	End If;
+	Insert Into silver.dim_period_reference(
+		periods,
+		years,
+		month_num,
+		month_name,
+		quarter,
+		quarter_num,
+		month_year,
+		year_month_sort
+	)
+	Select
+		periods,
+		years,
+		month_num,
+		month_name,
+		quarter,
+		quarter_num,
+		month_year,
+		year_month_sort
+	From bronze.dim_period_reference;
+
+

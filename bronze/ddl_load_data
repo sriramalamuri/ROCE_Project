@@ -2,6 +2,11 @@
 --Load data into the tables
 --===========================================
 
+--Load data into table dim_scenario_master
+
+Truncate Table bronze.dim_scenario_master;
+Copy bronze.dim_scenario_master from 'C:/SQL_Project/ROCE/Master_Files/scenario_master.csv' with (header true, format csv)
+
 --Load data into table dim_entity_pack
 
 Truncate Table bronze.dim_entity_pack;

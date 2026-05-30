@@ -272,3 +272,39 @@ Begin
 		years||month_name as month_year, 
 		category
 	From fact_bs_grid_ye;
+
+--Load data into silver.fact_pl_act
+
+	If to_regclass('silver.fact_pl_act') Is Not Null Then
+	Truncate Table silver.fact_pl_act
+	End If;
+	Insert Into silver.fact_pl_act(
+		pack_entity_name,
+		line_description,
+		custom_1,
+		custom_2,
+		years,
+		scenario,
+		months,
+		amount_in_rupees,
+		ebit_direction, --this will come from Left join on dim_ebit_direction
+		common_name, --this will come from Left join on dim_ebit_direction
+		category, --this will come from Left join on dim_ebit_direction
+		year_month_name --this will come from concat of years and months columns
+	)
+	Select
+		pa.pack_entity_name,
+		pa.line_description,
+		pa.custom_1,
+		pa.custom_2,
+		pa.years,
+		pa.scenario,
+		pa.months,
+		pa.amount_in_rupees,
+		ed.ebit_direction, --this will come from Left join on dim_ebit_direction
+		ed.common_name, --this will come from Left join on dim_ebit_direction
+		ed.category, --this will come from Left join on dim_ebit_direction
+		pa.years||pa.months as year_month_name --this will come from concat of years and months columns
+	From bronze.fact_pl_act pa
+	Left Join bronze.dim_ebit_direction ed
+	On pa.line_description = ed.line_description;

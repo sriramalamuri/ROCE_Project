@@ -50,3 +50,97 @@ Begin
 		ebit_direction,
 		category
 	From silver.dim_ebit_direction;
+
+--Create view dim_entity_pack
+
+	Drop view if exists gold.dim_entity_pack;
+	Create view gold.dim_entity_pack as
+	Select
+		entity_key,
+		entity_pack_name,
+		common_name,
+		vertical
+	From silver.dim_entity_pack;
+
+--Create view dim_entity_tb
+
+	Drop view if exists gold.dim_entity_tb;
+	Create view gold.dim_entity_tb as
+	Select
+		entity_key,
+		entity_code,
+		entity_name,
+		common_name,
+		vertical
+	From silver.dim_entity_tb;
+
+--Create view dim_gl_mapping
+
+	Drop view if exists gold.dim_gl_mapping;
+	Create view gold.dim_gl_mapping as
+	Select
+		gl_number,
+		gl_description,
+		gl_mapping,
+		statement_map,
+		statement_group,
+		ce_direction,
+		adjustment_items,
+		ce_bucket,
+		ce_sub_bucket
+	From silver.dim_gl_mapping;
+
+--Create view dim_period_reference
+
+	Drop view if exists gold.dim_period_reference;
+	Create view gold.dim_period_reference as
+	Select
+		periods,
+		years,
+		month_num,
+		month_name,
+		quarter,
+		quarter_num,
+		month_year,
+		year_month_sort,
+		year_month_name
+	From silver.dim_period_reference;
+
+--Create view dim_scenario_master
+
+	Drop view if exists gold.dim_scenario_master;
+	Create view gold.dim_scenario_master as
+	Select
+		scenario,
+		months
+	From silver.dim_scenario_master;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+

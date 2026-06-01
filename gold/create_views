@@ -1,0 +1,52 @@
+--==================================================
+--Create views in gold layer
+--==================================================
+Create or Replace procedure gold.create_views()
+Language plpgsql
+As
+$$
+Begin
+
+--Create view gold.dim_annualized_factor
+
+	Drop view if exists gold.dim_annualized_factor;
+	Create view gold.dim_annualized_factor As
+	Select 
+		month_num,
+		factor,
+		month_name
+	From silver.dim_annualized_factor;
+
+--Create view gold.dim_ce_direction
+
+	Drop view if exists gold.dim_ce_direction;
+	Create view gold.dim_ce_direction as
+	Select
+		order_key,
+		line_description,
+		ce_direction,
+		adjustment_items,
+		ce_bucket,
+		ce_sub_bucket,
+		category
+	From silver.dim_ce_direction;
+
+--Create view dim_ce_method
+
+	Drop view if exists gold.dim_ce_method;
+	Create view gold.dim_ce_method as
+	Select
+		method_name
+	From silver.dim_ce_method;
+
+--Create view dim_ebit_direction
+
+	Drop view if exists gold.dim_ebit_direction;
+	Create view gold.dim_ebit_direction as
+	Select
+		order_key,
+		line_description,
+		common_name,
+		ebit_direction,
+		category
+	From silver.dim_ebit_direction;

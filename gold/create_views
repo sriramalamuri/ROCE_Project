@@ -115,6 +115,33 @@ Begin
 		months
 	From silver.dim_scenario_master;
 
+--Create view fact_bs_act
+
+	Drop view if exists gold.fact_bs_act;
+	Create view gold.fact_bs_act as
+	Select
+		ba.line_description,
+		ba.pack_entity_name,
+		ba.years,
+		ba.scenario,
+		ba.months,
+		ba.amount_in_rupees,
+		ba.ce_direction, 
+		ba.adjustment_items, 
+		ba.ce_bucket, 
+		ba.ce_sub_bucket, 
+		ba.month_year, 
+		ba.category,
+		ep.common_name, --from dim_entity_pack
+		ep.vertical,
+		'ytd_annualized' as ce_method,--updated manually
+		coalesce(ba.amount_in_rupees * ba.ce_direction, 0) as capital_employed,
+		coalesce(ba.amount_in_rupees * ba.adjustment_items, 0) as adjustment_value
+	From silver.fact_bs_act ba
+	Left Join silver.dim_entity_pack ep
+	On ba.pack_entity_name = ep.entity_pack_name
+	Where ba.line_description Is Not Null
+	Order by ba.month_year;
 
 
 

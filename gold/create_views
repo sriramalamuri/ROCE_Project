@@ -143,31 +143,30 @@ Begin
 	Where ba.line_description Is Not Null
 	Order by ba.month_year;
 
+--Create view fact_bs_grid_ye
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
+	Drop view if exists gold.fact_bs_grid_ye;
+	Create view gold.fact_bs_grid_ye as
+	Select
+		bg.line_description,
+		bg.pack_entity_name,
+		bg.years,
+		bg.scenario,
+		bg.months,
+		bg.amount_in_rupees,
+		bg.ce_direction, 
+		bg.adjustment_items, 
+		bg.ce_bucket, 
+		bg.ce_sub_bucket, 
+		bg.month_year, 
+		bg.category,
+		ep.common_name, --from dim_entity_pack
+		ep.vertical,
+		'year_end' as ce_method,--updated manually
+		coalesce(bg.amount_in_rupees * bg.ce_direction, 0) as capital_employed,
+		coalesce(bg.amount_in_rupees * bg.adjustment_items, 0) as adjustment_value
+	From silver.fact_bs_grid_ye bg
+	Left Join silver.dim_entity_pack ep
+	On bg.pack_entity_name = ep.entity_pack_name
+	Where bg.line_description Is Not Null
+	Order by bg.month_year;

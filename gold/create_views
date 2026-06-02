@@ -136,7 +136,18 @@ Begin
 		ep.vertical,
 		'ytd_annualized' as ce_method,--updated manually
 		coalesce(ba.amount_in_rupees * ba.ce_direction, 0) as capital_employed,
-		coalesce(ba.amount_in_rupees * ba.adjustment_items, 0) as adjustment_value
+		coalesce(ba.amount_in_rupees * ba.adjustment_items, 0) as adjustment_value,
+		Case
+			When ba.ce_bucket = 'Working capital CE' Then coalesce(ba.amount_in_rupees * ba.ce_direction, 0)
+			Else 0
+		End as working_capital_ce,
+		Case
+			When ba.ce_bucket = 'Fixed assets CE' Then coalesce(ba.amount_in_rupees * ba.ce_direction, 0)
+			Else 0
+		End as fixed_assets_ce,
+		Case When ba.ce_bucket = 'Other CE' Then coalesce(ba.amount_in_rupees * ba.ce_direction, 0)
+		Else 0
+		End as other_ce
 	From silver.fact_bs_act ba
 	Left Join silver.dim_entity_pack ep
 	On ba.pack_entity_name = ep.entity_pack_name
@@ -164,7 +175,18 @@ Begin
 		ep.vertical,
 		'year_end' as ce_method,--updated manually
 		coalesce(bg.amount_in_rupees * bg.ce_direction, 0) as capital_employed,
-		coalesce(bg.amount_in_rupees * bg.adjustment_items, 0) as adjustment_value
+		coalesce(bg.amount_in_rupees * bg.adjustment_items, 0) as adjustment_value,
+		Case
+			When bg.ce_bucket = 'Working capital CE' Then coalesce(bg.amount_in_rupees * bg.ce_direction, 0)
+			Else 0
+		End as working_capital_ce,
+		Case
+			When bg.ce_bucket = 'Fixed assets CE' Then coalesce(bg.amount_in_rupees * bg.ce_direction, 0)
+			Else 0
+		End as fixed_assets_ce,
+		Case When bg.ce_bucket = 'Other CE' Then coalesce(bg.amount_in_rupees * bg.ce_direction, 0)
+		Else 0
+		End as other_ce
 	From silver.fact_bs_grid_ye bg
 	Left Join silver.dim_entity_pack ep
 	On bg.pack_entity_name = ep.entity_pack_name
@@ -190,7 +212,43 @@ Begin
 		ep.vertical, -- vertical name from dim_entity_pack
 		'ytd_annualized' as ce_method, --entered manually
 		pa.factor as annualization_factor,
-		coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)as ebit_amount
+		coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)as ebit_amount,
+			Case
+				When pa.common_name = 'Revenue' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Revenue,
+			Case
+				When pa.common_name = 'Operating expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Operating_expense,
+			Case
+				When pa.common_name = 'Overhead expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Overhead_expense,	
+			Case
+				When pa.common_name = 'Non-operating (income) / expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Non_operating_income_expense,
+			Case
+				When pa.common_name = 'Depreciation' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Depreciation,
+			Case
+				When pa.common_name = 'IFRS 16 Amortization' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as IFRS16_Amortization,
+			Case
+				When pa.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as IFRIC12_Port_Concession_Amortization,
+			Case
+				When pa.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Lease_Payments_IFRS16,
+			Case
+				When pa.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Service_Concession_Payments_IFRIC12
 	From silver.fact_pl_act pa
 	Left Join silver.dim_entity_pack ep
 	On pa.pack_entity_name = ep.entity_pack_name
@@ -215,7 +273,43 @@ Begin
 		ep.common_name as entity_name, --entity common name from dim_entity_pack
 		ep.vertical, -- vertical name from dim_entity_pack
 		'year_end' as ce_method, --entered manually
-		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount
+		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
+			Case
+				When pg.common_name = 'Revenue' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as Revenue,
+			Case
+				When pg.common_name = 'Operating expense' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as Operating_expense,
+			Case
+				When pg.common_name = 'Overhead expense' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as Overhead_expense,	
+			Case
+				When pg.common_name = 'Non-operating (income) / expense' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as Non_operating_income_expense,
+			Case
+				When pg.common_name = 'Depreciation' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as Depreciation,
+			Case
+				When pg.common_name = 'IFRS 16 Amortization' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as IFRS16_Amortization,
+			Case
+				When pg.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as IFRIC12_Port_Concession_Amortization,
+			Case
+				When pg.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as Lease_Payments_IFRS16,
+			Case
+				When pg.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as Service_Concession_Payments_IFRIC12
 	From silver.fact_pl_grid_ye pg
 	Left Join silver.dim_entity_pack ep
 	On pg.pack_entity_name = ep.entity_pack_name
@@ -253,3 +347,5 @@ Begin
 	
 End;
 $$;
+
+

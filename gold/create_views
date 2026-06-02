@@ -221,3 +221,35 @@ Begin
 	On pg.pack_entity_name = ep.entity_pack_name
 	Where pg.line_description Is Not Null
 	Order by pg.year_month_name;
+
+--Create view fact_trial_balance
+
+	Drop view if exists gold.fact_trial_balance;
+	create view gold.fact_trial_balance as
+	Select
+		tb.accounting_period,
+		tb.entity_code,
+		tb.entity_name,
+		tb.account,
+		tb.account_description,
+		tb.period_activity,
+		tb.ending_balance,
+		tb.statement_map,
+		tb.statement_group,
+		tb.ce_direction,
+		tb.adjustment_items,
+		tb.ce_bucket,
+		tb.ce_sub_bucket,
+		tb.gl_mapping,
+		etb.common_name,
+		'denominator' as category,
+		coalesce(tb.ending_balance * tb.ce_direction, 0)as capital_employed,
+		coalesce(tb.ending_balance * tb.adjustment_items, 0)as adjustment_amount,
+		'ytd_annualized' as ce_method
+	From silver.fact_trial_balance tb
+	Left join silver.dim_entity_tb etb
+	On tb.entity_code = etb.entity_code
+	Order by tb.accounting_period;
+	
+End;
+$$;

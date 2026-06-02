@@ -435,7 +435,7 @@ Begin
 		gm.gl_mapping
 	From bronze.fact_trial_balance tb
 	Left Join bronze.dim_gl_mapping gm
-	On tb.account_description = gm.gl_description;
+	On tb.account = gm.gl_number;
 
 End;
 $$;

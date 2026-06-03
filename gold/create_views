@@ -193,6 +193,45 @@ Begin
 	Where bg.line_description Is Not Null
 	Order by bg.month_year;
 
+--Create view fact_bs_budget
+
+	Drop view if exists gold.fact_bs_budget;
+	Create view gold.fact_bs_budget as
+	Select
+		bg.line_description,
+		bg.pack_entity_name,
+		bg.years,
+		bg.scenario,
+		bg.months,
+		bg.amount_in_rupees,
+		bg.ce_direction, 
+		bg.adjustment_items, 
+		bg.ce_bucket, 
+		bg.ce_sub_bucket, 
+		bg.month_year, 
+		bg.category,
+		ep.common_name as entity_name, --from dim_entity_pack
+		ep.vertical,
+		'budget' as ce_method,--updated manually
+		coalesce(bg.amount_in_rupees * bg.ce_direction, 0) as capital_employed,
+		coalesce(bg.amount_in_rupees * bg.adjustment_items, 0) as adjustment_value,
+		Case
+			When bg.ce_bucket = 'Working capital CE' Then coalesce(bg.amount_in_rupees * bg.ce_direction, 0)
+			Else 0
+		End as working_capital_ce,
+		Case
+			When bg.ce_bucket = 'Fixed assets CE' Then coalesce(bg.amount_in_rupees * bg.ce_direction, 0)
+			Else 0
+		End as fixed_assets_ce,
+		Case When bg.ce_bucket = 'Other CE' Then coalesce(bg.amount_in_rupees * bg.ce_direction, 0)
+		Else 0
+		End as other_ce
+	From silver.fact_bs_budget bg
+	Left Join silver.dim_entity_pack ep
+	On bg.pack_entity_name = ep.entity_pack_name
+	Where bg.line_description Is Not Null
+	Order by bg.month_year;
+
 --Create view fact_pl_act
 
 	Drop view if exists gold.fact_pl_act;

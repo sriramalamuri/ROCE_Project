@@ -100,5 +100,17 @@ Copy bronze.dim_annualized_factor from 'C:/SQL_Project/ROCE/Master_Files/Annuali
 Truncate table bronze.dim_ce_method;
 Copy bronze.dim_ce_method from 'C:/SQL_Project/ROCE/Master_Files/ce_method_name.csv' with (header true, format csv);
 
+--==========================================================================================================
+--Load data into bronze.fact_bs_budget
+--Since this is one time, it is not part of stored procedure to load data into fact tables in bronze layer
+--==========================================================================================================
+Truncate Table bronze.fact_bs_budget;
+Copy bronze.fact_bs_budget from 'C:/SQL_Project/ROCE/Grids/CSV_grids/BS_Full_Yr_Budget.csv' with (header true, format csv);
 
+--==========================================================================================================
+--Load data into bronze.fact_pl_budget
+--Since this is one time, it is not part of stored procedure to load data into fact tables in bronze layer
+--==========================================================================================================
 
+Truncate Table bronze.fact_pl_budget;
+Copy bronze.fact_pl_budget from 'C:/SQL_Project/ROCE/Grids/CSV_grids/PL grid_Full_Yr_Budget.csv' with (header true, format csv);

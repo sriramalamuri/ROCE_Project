@@ -1,5 +1,3 @@
-
-
 --==================================================
 --Create views in gold layer
 --stored procedure gold.create_views()
@@ -311,6 +309,7 @@ Begin
 		pg.line_description,
 		pg.years,
 		pg.scenario,
+		'Dec' as months,
 		pg.amount_in_rupees,
 		pg.ebit_direction,
 		pg.year_month_name as month_year,
@@ -320,6 +319,7 @@ Begin
 		ep.vertical, -- vertical name from dim_entity_pack
 		'year_end' as ce_method, --entered manually
 		'forecast' as reporting_scenario, --entered manually
+		'' as annualization_factor,
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
 			Case
 				When pg.common_name = 'Revenue' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
@@ -372,6 +372,7 @@ Begin
 		pg.line_description,
 		pg.years,
 		pg.scenario,
+		'Dec' as months,
 		pg.amount_in_rupees,
 		pg.ebit_direction,
 		pg.year_month_name as month_year,
@@ -381,6 +382,7 @@ Begin
 		ep.vertical, -- vertical name from dim_entity_pack
 		'' as ce_method, --entered manually
 		'budget' as reporting_scenario, --entered manually
+		'' as annualization_factor,
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
 			Case
 				When pg.common_name = 'Revenue' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
@@ -453,6 +455,6 @@ Begin
 	Left join silver.dim_entity_tb etb
 	On tb.entity_code = etb.entity_code;
 	--Order by tb.accounting_period;
-	
+
 End;
 $$;

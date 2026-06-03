@@ -38,7 +38,7 @@ Truncate Table bronze.dim_ebit_direction;
 Copy bronze.dim_ebit_direction from 'C:/SQL_Project/ROCE/Master_Files/EBIT_Direction.csv' with (header true, format csv)
 
 --Load data into bronze.fact_bs_budget
---Since this is one time, it is not part of stored procedure to load data into fact tables in silver layer
+--Since this is one time, it is not part of stored procedure to load data into fact tables in bronze layer
 
 Truncate Table bronze.fact_bs_budget;
 Copy bronze.fact_bs_budget from 'C:/SQL_Project/ROCE/Grids/CSV_grids/BS_Full_Yr_Budget.csv' with (header true, format csv);

@@ -134,7 +134,8 @@ Begin
 		ba.category,
 		ep.common_name as entity_name, --from dim_entity_pack
 		ep.vertical,
-		'ytd_annualized' as ce_method,--updated manually
+		'ytd_annualized' as ce_method,--updated manually,
+		'actual' as reporting_scenario,
 		coalesce(ba.amount_in_rupees * ba.ce_direction, 0) as capital_employed,
 		coalesce(ba.amount_in_rupees * ba.adjustment_items, 0) as adjustment_value,
 		Case
@@ -174,6 +175,7 @@ Begin
 		ep.common_name as entity_name, --from dim_entity_pack
 		ep.vertical,
 		'year_end' as ce_method,--updated manually
+		'forecast' as reporting_scenario,
 		coalesce(bg.amount_in_rupees * bg.ce_direction, 0) as capital_employed,
 		coalesce(bg.amount_in_rupees * bg.adjustment_items, 0) as adjustment_value,
 		Case
@@ -212,7 +214,8 @@ Begin
 		bg.category,
 		ep.common_name as entity_name, --from dim_entity_pack
 		ep.vertical,
-		'budget' as ce_method,--updated manually
+		'' as ce_method,--updated manually
+		'budget' as reporting_scenario,
 		coalesce(bg.amount_in_rupees * bg.ce_direction, 0) as capital_employed,
 		coalesce(bg.amount_in_rupees * bg.adjustment_items, 0) as adjustment_value,
 		Case

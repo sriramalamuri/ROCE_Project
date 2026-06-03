@@ -1,3 +1,5 @@
+
+
 --==================================================
 --Create views in gold layer
 --stored procedure gold.create_views()
@@ -377,7 +379,7 @@ Begin
 		pg.category,
 		ep.common_name as entity_name, --entity common name from dim_entity_pack
 		ep.vertical, -- vertical name from dim_entity_pack
-		'year_end' as ce_method, --entered manually
+		'' as ce_method, --entered manually
 		'budget' as reporting_scenario, --entered manually
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
 			Case
@@ -454,5 +456,3 @@ Begin
 	
 End;
 $$;
-
-

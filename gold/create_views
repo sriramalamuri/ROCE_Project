@@ -319,7 +319,7 @@ Begin
 		ep.vertical, -- vertical name from dim_entity_pack
 		'year_end' as ce_method, --entered manually
 		'forecast' as reporting_scenario, --entered manually
-		'' as annualization_factor,
+		1 as annualization_factor,
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
 			Case
 				When pg.common_name = 'Revenue' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
@@ -382,7 +382,7 @@ Begin
 		ep.vertical, -- vertical name from dim_entity_pack
 		'' as ce_method, --entered manually
 		'budget' as reporting_scenario, --entered manually
-		'' as annualization_factor,
+		1 as annualization_factor,
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
 			Case
 				When pg.common_name = 'Revenue' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
@@ -458,3 +458,42 @@ Begin
 
 End;
 $$;
+
+--========================================================================
+--Stored procedure to creat consol bs and pl views based on the grid files
+--these two views along with the trail balance will be the fact table in 
+--power BI
+--=========================================================================
+
+Create or Replace procedure gold.consol_views()
+Language plpgsql
+As
+$$
+Begin
+
+--==================================================================
+--Consolidated balance sheet view
+--==================================================================
+	Drop view if exists gold.consol_bs;
+	Create view gold.consol_bs as
+		Select * from gold.fact_bs_act
+		Union All
+		Select * from gold.fact_bs_grid_ye
+		Union All
+		Select * from gold.fact_bs_budget;
+--===================================================================
+--Consolidated p&l view
+--===================================================================
+
+Drop view if exists gold.consol_pl;
+	Create view gold.consol_pl as
+		Select * from gold.fact_pl_act
+		Union All
+		Select * from gold.fact_pl_grid_ye
+		Union All
+		Select * from gold.fact_pl_budget;
+
+End;
+$$;
+
+--***********************************************************************--

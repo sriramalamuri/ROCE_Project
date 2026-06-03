@@ -187,4 +187,16 @@ Create Table bronze.fact_trial_balance(
 	ending_balance numeric
 );
 
+--Create table bronze.fact_bs_budget
+--The purpose of this table is to provide the data to work out
+--the capital employed based on the budget for 2026
+
+Create Table bronze.fact_bs_budget(
+	line_description varchar(200),
+	pack_entity_name varchar(100),
+	years int,
+	scenario varchar(100),
+	months varchar(20),
+	amount_in_rupees numeric
+);
 

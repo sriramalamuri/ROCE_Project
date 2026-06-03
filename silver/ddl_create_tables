@@ -242,7 +242,9 @@ Create Table silver.fact_pl_grid_ye(
 	amount_in_rupees numeric,
 	ebit_direction int,
 	category varchar(20),
-	dwh_create_date timestamp default now()
+	dwh_create_date timestamp default now(),
+	year_month_name varchar(20),
+	common_name varchar(100)
 );
 
 --Create Table silver.fact_pl_budget
@@ -264,7 +266,9 @@ Create Table silver.fact_pl_budget(
 	amount_in_rupees numeric,
 	ebit_direction int,
 	category varchar(20),
-	dwh_create_date timestamp default now()
+	year_month_name varchar(20),
+	common_name varchar(100)
+	dwh_create_date timestamp default now(),
 );
 
 --Create Table silver.fact_trial_balance

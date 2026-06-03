@@ -1,5 +1,6 @@
 --==================================================
 --Create views in gold layer
+--stored procedure gold.create_views()
 --==================================================
 Create or Replace procedure gold.create_views()
 Language plpgsql
@@ -253,6 +254,7 @@ Begin
 		ep.common_name as entity_name, --entity common name from dim_entity_pack
 		ep.vertical, -- vertical name from dim_entity_pack
 		'ytd_annualized' as ce_method, --entered manually
+		'actual' as reporting_scenario, --entered manually
 		pa.factor as annualization_factor,
 		coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)as ebit_amount,
 			Case
@@ -315,6 +317,7 @@ Begin
 		ep.common_name as entity_name, --entity common name from dim_entity_pack
 		ep.vertical, -- vertical name from dim_entity_pack
 		'year_end' as ce_method, --entered manually
+		'forecast' as reporting_scenario, --entered manually
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
 			Case
 				When pg.common_name = 'Revenue' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
@@ -381,7 +384,8 @@ Begin
 		'denominator' as category,
 		coalesce(tb.ending_balance * tb.ce_direction, 0)as capital_employed,
 		coalesce(tb.ending_balance * tb.adjustment_items, 0)as adjustment_amount,
-		'ytd_annualized' as ce_method
+		'ytd_annualized' as ce_method,
+		'actual' as reporting_scenario
 	From silver.fact_trial_balance tb
 	Left join silver.dim_entity_tb etb
 	On tb.entity_code = etb.entity_code;
@@ -389,4 +393,5 @@ Begin
 	
 End;
 $$;
+
 

@@ -151,8 +151,8 @@ Begin
 	From silver.fact_bs_act ba
 	Left Join silver.dim_entity_pack ep
 	On ba.pack_entity_name = ep.entity_pack_name
-	Where ba.line_description Is Not Null
-	Order by ba.month_year;
+	Where ba.line_description Is Not Null;
+	--Order by ba.month_year;
 
 --Create view fact_bs_grid_ye
 
@@ -190,8 +190,8 @@ Begin
 	From silver.fact_bs_grid_ye bg
 	Left Join silver.dim_entity_pack ep
 	On bg.pack_entity_name = ep.entity_pack_name
-	Where bg.line_description Is Not Null
-	Order by bg.month_year;
+	Where bg.line_description Is Not Null;
+	--Order by bg.month_year;
 
 --Create view fact_bs_budget
 
@@ -229,8 +229,8 @@ Begin
 	From silver.fact_bs_budget bg
 	Left Join silver.dim_entity_pack ep
 	On bg.pack_entity_name = ep.entity_pack_name
-	Where bg.line_description Is Not Null
-	Order by bg.month_year;
+	Where bg.line_description Is Not Null;
+	--Order by bg.month_year;
 
 --Create view fact_pl_act
 
@@ -291,8 +291,8 @@ Begin
 	From silver.fact_pl_act pa
 	Left Join silver.dim_entity_pack ep
 	On pa.pack_entity_name = ep.entity_pack_name
-	Where pa.line_description Is Not Null
-	Order by pa.year_month_name;
+	Where pa.line_description Is Not Null;
+	--Order by pa.year_month_name;
 
 
 --Create view fact_pl_grid_ye
@@ -352,8 +352,8 @@ Begin
 	From silver.fact_pl_grid_ye pg
 	Left Join silver.dim_entity_pack ep
 	On pg.pack_entity_name = ep.entity_pack_name
-	Where pg.line_description Is Not Null
-	Order by pg.year_month_name;
+	Where pg.line_description Is Not Null;
+	--Order by pg.year_month_name;
 
 --Create view fact_trial_balance
 
@@ -381,10 +381,9 @@ Begin
 		'ytd_annualized' as ce_method
 	From silver.fact_trial_balance tb
 	Left join silver.dim_entity_tb etb
-	On tb.entity_code = etb.entity_code
-	Order by tb.accounting_period;
+	On tb.entity_code = etb.entity_code;
+	--Order by tb.accounting_period;
 	
 End;
 $$;
-
 

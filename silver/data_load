@@ -437,6 +437,60 @@ Begin
 	Left Join bronze.dim_gl_mapping gm
 	On tb.account = gm.gl_number;
 
+--Load data into silver.fact_pl_budget
+
+	If to_regclass('silver.fact_pl_budget') Is Not Null Then
+	Truncate Table silver.fact_pl_budget;
+	End If;
+	Insert Into silver.fact_pl_budget(
+		pack_entity_name,
+		line_description,
+		custom_1,
+		custom_2,
+		years,
+		scenario,
+		view_,
+		amount_in_rupees,
+		ebit_direction, --this will come from Left join on dim_ebit_direction
+		common_name, --this will come from Left join on dim_ebit_direction
+		category, --this will come from Left join on dim_ebit_direction
+		year_month_name --this will come from concat of years from this table and months scenario_master
+    )
+	With fact_pl_budget as(
+	Select
+		pg.pack_entity_name as pack_entity_name,
+		pg.line_description as line_description,
+		pg.custom_1 as custom_1,
+		pg.custom_2 as custom_2,
+		pg.years as years,
+		pg.scenario as scenario,
+		pg.view_ as view_,
+		pg.amount_in_rupees as amount_in_rupees,
+		ed.ebit_direction as ebit_direction, 
+		ed.common_name as common_name, 
+		ed.category as category,
+		sm.months as month_name--this will come from concat of years from this table and months scenario_master
+    From bronze.fact_pl_budget pg
+	Left Join bronze.dim_ebit_direction ed
+	On pg.line_description = ed.line_description
+	Left Join bronze.dim_scenario_master sm
+	On pg.scenario = sm.scenario
+	)
+	Select
+		pack_entity_name,
+		line_description,
+		custom_1,
+		custom_2,
+		years,
+		scenario,
+		view_,
+		amount_in_rupees,
+		ebit_direction, 
+		common_name, 
+		category, 
+		years || month_name as year_month_name 
+	From fact_pl_budget;
+
 --Load data in silver.fact_bs_budget
 
 	If to_regclass('silver.fact_bs_budget') Is Not Null Then

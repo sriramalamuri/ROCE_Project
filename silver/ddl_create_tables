@@ -245,6 +245,28 @@ Create Table silver.fact_pl_grid_ye(
 	dwh_create_date timestamp default now()
 );
 
+--Create Table silver.fact_pl_budget
+
+Do $$
+Begin
+	If to_regclass('silver.fact_pl_budget') Is Not Null Then
+	Drop Table silver.fact_pl_budget;
+	End If;
+End $$;
+Create Table silver.fact_pl_budget(
+	pack_entity_name varchar(100),
+	line_description varchar(200),
+	custom_1 varchar(20),
+	custom_2 varchar(20),
+	years int,
+	scenario varchar(20),
+	view_ varchar(20), 
+	amount_in_rupees numeric,
+	ebit_direction int,
+	category varchar(20),
+	dwh_create_date timestamp default now()
+);
+
 --Create Table silver.fact_trial_balance
 
 Do $$

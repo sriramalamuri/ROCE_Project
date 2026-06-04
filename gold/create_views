@@ -136,7 +136,7 @@ Begin
 		ep.common_name as entity_name, --from dim_entity_pack
 		ep.vertical,
 		'ytd_annualized' as ce_method,--updated manually,
-		'actual' as reporting_scenario,
+		'actual_annualized' as reporting_scenario,
 		coalesce(ba.amount_in_rupees * ba.ce_direction, 0) as capital_employed,
 		coalesce(ba.amount_in_rupees * ba.adjustment_items, 0) as adjustment_value,
 		Case
@@ -176,7 +176,7 @@ Begin
 		ep.common_name as entity_name, --from dim_entity_pack
 		ep.vertical,
 		'year_end' as ce_method,--updated manually
-		'forecast' as reporting_scenario,
+		'forecast_fullyear' as reporting_scenario,
 		coalesce(bg.amount_in_rupees * bg.ce_direction, 0) as capital_employed,
 		coalesce(bg.amount_in_rupees * bg.adjustment_items, 0) as adjustment_value,
 		Case
@@ -216,7 +216,7 @@ Begin
 		ep.common_name as entity_name, --from dim_entity_pack
 		ep.vertical,
 		'' as ce_method,--updated manually
-		'budget' as reporting_scenario,
+		'budget_fullyear' as reporting_scenario,
 		coalesce(bg.amount_in_rupees * bg.ce_direction, 0) as capital_employed,
 		coalesce(bg.amount_in_rupees * bg.adjustment_items, 0) as adjustment_value,
 		Case
@@ -295,7 +295,7 @@ Begin
 		ep.common_name as entity_name, --entity common name from dim_entity_pack
 		ep.vertical, -- vertical name from dim_entity_pack
 		'ytd_annualized' as ce_method, --entered manually
-		'actual' as reporting_scenario, --entered manually
+		'actual_annualized' as reporting_scenario, --entered manually
 		pa.factor as annualization_factor,
 		coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)as ebit_amount,
 			Case
@@ -421,7 +421,7 @@ Begin
 		ep.common_name as entity_name, --entity common name from dim_entity_pack
 		ep.vertical, -- vertical name from dim_entity_pack
 		'year_end' as ce_method, --entered manually
-		'forecast' as reporting_scenario, --entered manually
+		'forecast_fullyear' as reporting_scenario, --entered manually
 		1 as annualization_factor,
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
 			Case
@@ -484,7 +484,7 @@ Begin
 		ep.common_name as entity_name, --entity common name from dim_entity_pack
 		ep.vertical, -- vertical name from dim_entity_pack
 		'' as ce_method, --entered manually
-		'budget' as reporting_scenario, --entered manually
+		'budget_fullyear' as reporting_scenario, --entered manually
 		1 as annualization_factor,
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
 			Case
@@ -583,7 +583,9 @@ Begin
 		Union All
 		Select * from gold.fact_bs_grid_ye
 		Union All
-		Select * from gold.fact_bs_budget;
+		Select * from gold.fact_bs_budget
+		Union All
+		Select * from gold.fact_bs_budget_month;
 --===================================================================
 --Consolidated p&l view
 --===================================================================
@@ -594,7 +596,9 @@ Drop view if exists gold.consol_pl;
 		Union All
 		Select * from gold.fact_pl_grid_ye
 		Union All
-		Select * from gold.fact_pl_budget;
+		Select * from gold.fact_pl_budget
+		Union All
+		Select * from gold.fact_pl_budget_ytd;
 
 End;
 $$;

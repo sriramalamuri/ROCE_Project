@@ -335,3 +335,51 @@ Create Table silver.dim_ce_method(
 	method_name varchar(100),
 	dwh_create_date timestamp default now()
 );
+
+--Create table silver.fact_bs_budget_month
+
+Do $$
+Begin
+	If to_regclass('silver.fact_bs_budget_month') Is Not Null Then
+	Drop Table silver.fact_bs_budget_month;
+	End If;
+End $$;
+Create Table silver.fact_bs_budget_month(
+	line_description varchar(200),
+	pack_entity_name varchar(100),
+ 	years int,
+	scenario varchar(100),
+	months varchar(20),
+	amount_in_rupees numeric,
+	ce_direction int,
+	adjustment_items int,
+	ce_bucket varchar(100),
+	ce_sub_bucket varchar(100),
+	month_year varchar(50),
+	category varchar(20),
+	dwh_create_date timestamp default now()
+);
+
+--Create Table silver.fact_pl_budget_ytd
+
+Do $$
+Begin
+	If to_regclass('silver.fact_pl_budget_ytd') Is Not Null Then
+	Drop Table silver.fact_budget_ytd;
+	End If;
+End $$;
+Create Table silver.fact_budget_ytd(
+	pack_entity_name varchar(100),
+	line_description varchar(200),
+	custom_1 varchar(20),
+	custom_2 varchar(20),
+	years int,
+	scenario varchar(20),
+	months varchar(20),
+	amount_in_rupees numeric,
+	ebit_direction int,
+	common_name varchar(100),
+	category varchar(20),
+	year_month_name varchar(20),
+	dwh_create_date timestamp default now()
+);

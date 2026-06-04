@@ -200,3 +200,26 @@ Create Table bronze.fact_bs_budget(
 	amount_in_rupees numeric
 );
 
+--Create table bronze.fact_bs_budget_month
+
+Create Table bronze.fact_bs_budget_month(
+	line_description varchar(200),
+	pack_entity_name varchar(100),
+ 	years int,
+	scenario varchar(100),
+	months varchar(20),
+	amount_in_rupees numeric
+);
+
+--Create table bronze.fact_pl_budget_ytd
+
+Create Table bronze.fact_pl_budget_ytd(
+	pack_entity_name varchar(100),
+	line_description varchar(200),
+	custom_1 varchar(20),
+	custom_2 varchar(20),
+	years int,
+	scenario varchar(20),
+	months varchar(20),
+	amount_in_rupees numeric
+);

@@ -365,10 +365,10 @@ Create Table silver.fact_bs_budget_month(
 Do $$
 Begin
 	If to_regclass('silver.fact_pl_budget_ytd') Is Not Null Then
-	Drop Table silver.fact_budget_ytd;
+	Drop Table silver.fact_pl_budget_ytd;
 	End If;
 End $$;
-Create Table silver.fact_budget_ytd(
+Create Table silver.fact_pl_budget_ytd(
 	pack_entity_name varchar(100),
 	line_description varchar(200),
 	custom_1 varchar(20),

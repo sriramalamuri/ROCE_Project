@@ -379,8 +379,9 @@ Create Table silver.fact_pl_budget_ytd(
 	months varchar(20),
 	amount_in_rupees numeric,
 	ebit_direction int,
-	common_name varchar(100),
 	category varchar(20),
 	year_month_name varchar(20),
+	common_name varchar(100),
+	factor numeric,
 	dwh_create_date timestamp default now()
 );

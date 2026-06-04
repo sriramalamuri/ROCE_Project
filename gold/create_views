@@ -340,6 +340,68 @@ Begin
 	Where pa.line_description Is Not Null;
 	--Order by pa.year_month_name;
 
+--Create view fact_pl_budget_ytd
+
+	Drop view if exists gold.fact_pl_budget_ytd;
+	Create view gold.fact_pl_budget_ytd as
+	Select
+		pa.pack_entity_name,
+		pa.line_description,
+		pa.years,
+		pa.scenario,
+		pa.months,
+		pa.amount_in_rupees,
+		pa.ebit_direction,
+		pa.year_month_name as month_year,
+		pa.common_name as pl_line,
+		pa.category,
+		ep.common_name as entity_name, --entity common name from dim_entity_pack
+		ep.vertical, -- vertical name from dim_entity_pack
+		'' as ce_method, --entered manually
+		'budget_annualized' as reporting_scenario, --entered manually
+		pa.factor as annualization_factor,
+		coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)as ebit_amount,
+			Case
+				When pa.common_name = 'Revenue' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Revenue,
+			Case
+				When pa.common_name = 'Operating expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Operating_expense,
+			Case
+				When pa.common_name = 'Overhead expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Overhead_expense,	
+			Case
+				When pa.common_name = 'Non-operating (income) / expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Non_operating_income_expense,
+			Case
+				When pa.common_name = 'Depreciation' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Depreciation,
+			Case
+				When pa.common_name = 'IFRS 16 Amortization' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as IFRS16_Amortization,
+			Case
+				When pa.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as IFRIC12_Port_Concession_Amortization,
+			Case
+				When pa.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Lease_Payments_IFRS16,
+			Case
+				When pa.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Service_Concession_Payments_IFRIC12
+	From silver.fact_pl_budget_ytd pa
+	Left Join silver.dim_entity_pack ep
+	On pa.pack_entity_name = ep.entity_pack_name
+	Where pa.line_description Is Not Null;
+	--Order by pa.year_month_name;
 
 --Create view fact_pl_grid_ye
 

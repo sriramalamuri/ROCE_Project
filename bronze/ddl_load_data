@@ -114,3 +114,23 @@ Copy bronze.fact_bs_budget from 'C:/SQL_Project/ROCE/Grids/CSV_grids/BS_Full_Yr_
 
 Truncate Table bronze.fact_pl_budget;
 Copy bronze.fact_pl_budget from 'C:/SQL_Project/ROCE/Grids/CSV_grids/PL grid_Full_Yr_Budget.csv' with (header true, format csv);
+
+--==========================================================================================================
+--Load data into bronze.fact_bs_budget_month
+--==========================================================================================================
+
+Truncate Table bronze.fact_bs_budget_month;
+Copy bronze.fact_bs_budget_month From 'C:/SQL_Project/ROCE/Grids/CSV_grids/BS - Monthly_Budget.csv' with (header true, format csv);
+
+
+--==========================================================================================================
+--Load data into bronze.fact_pl_budget_ytd
+--==========================================================================================================
+
+Truncate Table bronze.fact_pl_budget_ytd;
+Copy bronze.fact_pl_budget_ytd From 'C:/SQL_Project/ROCE/Grids/CSV_grids/PL grid - YTD_Budget.csv' with (header true, format csv);
+
+
+
+
+

@@ -1,0 +1,9 @@
+--Create table in gold view for a reference of ce_method and corresponding scenario selections
+
+Create table gold.dim_reporting_scenario(
+	ce_method text,
+	selected_scenario text,
+	budget_scenario text
+);
+
+--Load data into table dim_reporting_scenario

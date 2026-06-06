@@ -7,3 +7,7 @@ Create table gold.dim_reporting_scenario(
 );
 
 --Load data into table dim_reporting_scenario
+
+Truncate table gold.dim_reporting_scenario;
+Copy gold.dim_reporting_scenario from 'C:/SQL_Project/ROCE/Master_Files/gold_dim_reporting_scenario.csv' with (header true, format csv)
+

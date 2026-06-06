@@ -559,6 +559,16 @@ Begin
 	On tb.entity_code = etb.entity_code;
 	--Order by tb.accounting_period;
 
+--Create dim_entity_reporting to function as a filter option in power bi
+
+Drop View if exists gold.dim_entity_reporting;
+Create view gold.dim_entity_reporting as
+	Select
+	common_name,
+	vertical
+	From gold.dim_entity_pack;
+
+
 End;
 $$;
 

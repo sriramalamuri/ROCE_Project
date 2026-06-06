@@ -553,7 +553,7 @@ Begin
 		coalesce(tb.ending_balance * tb.ce_direction, 0)as capital_employed,
 		coalesce(tb.ending_balance * tb.adjustment_items, 0)as adjustment_amount,
 		'ytd_annualized' as ce_method,
-		'actual' as reporting_scenario
+		'actual_annualized' as reporting_scenario
 	From silver.fact_trial_balance tb
 	Left join silver.dim_entity_tb etb
 	On tb.entity_code = etb.entity_code;

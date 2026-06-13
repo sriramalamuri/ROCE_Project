@@ -215,7 +215,7 @@ Begin
 		bg.category,
 		ep.common_name as entity_name, --from dim_entity_pack
 		ep.vertical,
-		'' as ce_method,--updated manually
+		'year_end' as ce_method,--updated manually
 		'budget_fullyear' as reporting_scenario,
 		coalesce(bg.amount_in_rupees * bg.ce_direction, 0) as capital_employed,
 		coalesce(bg.amount_in_rupees * bg.adjustment_items, 0) as adjustment_value,
@@ -255,7 +255,7 @@ Begin
 		ba.category,
 		ep.common_name as entity_name, --from dim_entity_pack
 		ep.vertical,
-		'' as ce_method,--updated manually,
+		'ytd_annualized' as ce_method,--updated manually,
 		'budget_annualized' as reporting_scenario,
 		coalesce(ba.amount_in_rupees * ba.ce_direction, 0) as capital_employed,
 		coalesce(ba.amount_in_rupees * ba.adjustment_items, 0) as adjustment_value,
@@ -314,6 +314,10 @@ Begin
 				When pa.common_name = 'Non-operating (income) / expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
 				Else 0
 			End as Non_operating_income_expense,
+			Case
+				When pa.common_name = 'Management Fee' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Management_Fee,
 			Case
 				When pa.common_name = 'Depreciation' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
 				Else 0
@@ -378,6 +382,10 @@ Begin
 				Else 0
 			End as Non_operating_income_expense,
 			Case
+				When pa.common_name = 'Management Fee' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				Else 0
+			End as Management_Fee,			
+			Case
 				When pa.common_name = 'Depreciation' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
 				Else 0
 			End as Depreciation,
@@ -440,6 +448,10 @@ Begin
 				When pg.common_name = 'Non-operating (income) / expense' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
 				Else 0
 			End as Non_operating_income_expense,
+			Case
+				When pg.common_name = 'Management Fee' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as Management_Fee,
 			Case
 				When pg.common_name = 'Depreciation' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
 				Else 0
@@ -504,6 +516,10 @@ Begin
 				Else 0
 			End as Non_operating_income_expense,
 			Case
+				When pg.common_name = 'Management Fee' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				Else 0
+			End as Management_Fee,
+			Case
 				When pg.common_name = 'Depreciation' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
 				Else 0
 			End as Depreciation,
@@ -559,18 +575,9 @@ Begin
 	On tb.entity_code = etb.entity_code;
 	--Order by tb.accounting_period;
 
---Create dim_entity_reporting to function as a filter option in power bi
-
-Drop View if exists gold.dim_entity_reporting;
-Create view gold.dim_entity_reporting as
-	Select
-	common_name,
-	vertical
-	From gold.dim_entity_pack;
-
-
 End;
 $$;
+
 
 --========================================================================
 --Stored procedure to creat consol bs and pl views based on the grid files
@@ -583,6 +590,17 @@ Language plpgsql
 As
 $$
 Begin
+
+--======================================================================
+--Create dim_entity_reporting to function as a filter option in power bi
+--======================================================================
+
+	Drop View if exists gold.dim_entity_reporting;
+	Create view gold.dim_entity_reporting as
+		Select
+		common_name,
+		vertical
+		From gold.dim_entity_pack;
 
 --==================================================================
 --Consolidated balance sheet view

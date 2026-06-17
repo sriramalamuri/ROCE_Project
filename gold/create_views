@@ -276,7 +276,6 @@ Begin
 	Where ba.line_description Is Not Null;
 	--Order by ba.month_year;
 
-
 --Create view fact_pl_act
 
 	Drop view if exists gold.fact_pl_act;
@@ -299,43 +298,43 @@ Begin
 		pa.factor as annualization_factor,
 		coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)as ebit_amount,
 			Case
-				When pa.common_name = 'Revenue' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Revenue' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Revenue,
 			Case
-				When pa.common_name = 'Operating expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Operating expense' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Operating_expense,
 			Case
-				When pa.common_name = 'Overhead expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Overhead expense' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Overhead_expense,	
 			Case
-				When pa.common_name = 'Non-operating (income) / expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Non-operating (income) / expense' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Non_operating_income_expense,
 			Case
-				When pa.common_name = 'Management Fee' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Management Fee' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Management_Fee,
 			Case
-				When pa.common_name = 'Depreciation' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Depreciation' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Depreciation,
 			Case
-				When pa.common_name = 'IFRS 16 Amortization' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'IFRS 16 Amortization' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as IFRS16_Amortization,
 			Case
-				When pa.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as IFRIC12_Port_Concession_Amortization,
 			Case
-				When pa.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Lease_Payments_IFRS16,
 			Case
-				When pa.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Service_Concession_Payments_IFRIC12
 	From silver.fact_pl_act pa
@@ -343,6 +342,8 @@ Begin
 	On pa.pack_entity_name = ep.entity_pack_name
 	Where pa.line_description Is Not Null;
 	--Order by pa.year_month_name;
+
+
 
 --Create view fact_pl_budget_ytd
 
@@ -366,43 +367,43 @@ Drop view if exists gold.fact_pl_budget_ytd;
 		pa.factor as annualization_factor,
 		coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)as ebit_amount,
 			Case
-				When pa.common_name = 'Revenue' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Revenue' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Revenue,
 			Case
-				When pa.common_name = 'Operating expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Operating expense' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Operating_expense,
 			Case
-				When pa.common_name = 'Overhead expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Overhead expense' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Overhead_expense,	
 			Case
-				When pa.common_name = 'Non-operating (income) / expense' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Non-operating (income) / expense' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Non_operating_income_expense,
 			Case
-				When pa.common_name = 'Management Fee' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Management Fee' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Management_Fee,			
 			Case
-				When pa.common_name = 'Depreciation' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Depreciation' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Depreciation,
 			Case
-				When pa.common_name = 'IFRS 16 Amortization' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'IFRS 16 Amortization' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as IFRS16_Amortization,
 			Case
-				When pa.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as IFRIC12_Port_Concession_Amortization,
 			Case
-				When pa.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Lease_Payments_IFRS16,
 			Case
-				When pa.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pa.amount_in_rupees * pa.ebit_direction * pa.factor, 0)
+				When pa.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as Service_Concession_Payments_IFRIC12
 	From silver.fact_pl_budget_ytd pa
@@ -433,43 +434,43 @@ Drop view if exists gold.fact_pl_budget_ytd;
 		1 as annualization_factor,
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
 			Case
-				When pg.common_name = 'Revenue' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Revenue' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Revenue,
 			Case
-				When pg.common_name = 'Operating expense' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Operating expense' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Operating_expense,
 			Case
-				When pg.common_name = 'Overhead expense' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Overhead expense' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Overhead_expense,	
 			Case
-				When pg.common_name = 'Non-operating (income) / expense' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Non-operating (income) / expense' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Non_operating_income_expense,
 			Case
-				When pg.common_name = 'Management Fee' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Management Fee' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Management_Fee,
 			Case
-				When pg.common_name = 'Depreciation' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Depreciation' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Depreciation,
 			Case
-				When pg.common_name = 'IFRS 16 Amortization' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'IFRS 16 Amortization' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as IFRS16_Amortization,
 			Case
-				When pg.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as IFRIC12_Port_Concession_Amortization,
 			Case
-				When pg.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Lease_Payments_IFRS16,
 			Case
-				When pg.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Service_Concession_Payments_IFRIC12
 	From silver.fact_pl_grid_ye pg
@@ -500,43 +501,43 @@ Drop view if exists gold.fact_pl_budget_ytd;
 		1 as annualization_factor,
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,
 			Case
-				When pg.common_name = 'Revenue' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Revenue' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Revenue,
 			Case
-				When pg.common_name = 'Operating expense' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Operating expense' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Operating_expense,
 			Case
-				When pg.common_name = 'Overhead expense' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Overhead expense' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Overhead_expense,	
 			Case
-				When pg.common_name = 'Non-operating (income) / expense' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Non-operating (income) / expense' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Non_operating_income_expense,
 			Case
-				When pg.common_name = 'Management Fee' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Management Fee' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Management_Fee,
 			Case
-				When pg.common_name = 'Depreciation' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Depreciation' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Depreciation,
 			Case
-				When pg.common_name = 'IFRS 16 Amortization' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'IFRS 16 Amortization' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as IFRS16_Amortization,
 			Case
-				When pg.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'IFRIC 12 - Port Concession Amortizationn' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as IFRIC12_Port_Concession_Amortization,
 			Case
-				When pg.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Lease Payments (IFRS 16)' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Lease_Payments_IFRS16,
 			Case
-				When pg.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)
+				When pg.common_name = 'Service Concession Payments (IFRIC 12)' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as Service_Concession_Payments_IFRIC12
 	From silver.fact_pl_budget pg

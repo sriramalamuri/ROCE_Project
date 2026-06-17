@@ -236,7 +236,7 @@ Begin
 	Where bg.line_description Is Not Null;
 	--Order by bg.month_year;
 
---Create view fact_bs_act
+--Create view fact_bs_budget_month
 
 	Drop view if exists gold.fact_bs_budget_month;
 	Create view gold.fact_bs_budget_month as

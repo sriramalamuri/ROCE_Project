@@ -495,7 +495,7 @@ Drop view if exists gold.fact_pl_budget_ytd;
 		pg.category,
 		ep.common_name as entity_name, --entity common name from dim_entity_pack
 		ep.vertical, -- vertical name from dim_entity_pack
-		'' as ce_method, --entered manually
+		'year_end' as ce_method, --entered manually
 		'budget_fullyear' as reporting_scenario, --entered manually
 		1 as annualization_factor,
 		coalesce(pg.amount_in_rupees * pg.ebit_direction, 0)as ebit_amount,

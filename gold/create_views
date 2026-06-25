@@ -326,7 +326,7 @@ Begin
 				Else 0
 			End as IFRS16_Amortization,
 			Case
-				When pa.common_name = 'IFRIC 12 - Port Concession Amortization' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
+				When pa.common_name = 'IFRIC 12 Port Concession Amortization' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as IFRIC12_Port_Concession_Amortization,
 			Case
@@ -395,7 +395,7 @@ Drop view if exists gold.fact_pl_budget_ytd;
 				Else 0
 			End as IFRS16_Amortization,
 			Case
-				When pa.common_name = 'IFRIC 12 - Port Concession Amortization' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
+				When pa.common_name = 'IFRIC 12 Port Concession Amortization' Then coalesce(pa.amount_in_rupees * pa.factor, 0)
 				Else 0
 			End as IFRIC12_Port_Concession_Amortization,
 			Case
@@ -462,7 +462,7 @@ Drop view if exists gold.fact_pl_budget_ytd;
 				Else 0
 			End as IFRS16_Amortization,
 			Case
-				When pg.common_name = 'IFRIC 12 - Port Concession Amortization' Then coalesce(pg.amount_in_rupees, 0)
+				When pg.common_name = 'IFRIC 12 Port Concession Amortization' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as IFRIC12_Port_Concession_Amortization,
 			Case
@@ -529,7 +529,7 @@ Drop view if exists gold.fact_pl_budget_ytd;
 				Else 0
 			End as IFRS16_Amortization,
 			Case
-				When pg.common_name = 'IFRIC 12 - Port Concession Amortization' Then coalesce(pg.amount_in_rupees, 0)
+				When pg.common_name = 'IFRIC 12 Port Concession Amortization' Then coalesce(pg.amount_in_rupees, 0)
 				Else 0
 			End as IFRIC12_Port_Concession_Amortization,
 			Case
